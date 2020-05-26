@@ -2,6 +2,7 @@ locals {
   vpc_name      = "${var.resource_id}-vpc"
   igw_name      = "${var.resource_id}-igw"
   subnet_prefix = "${var.resource_id}-subnet"
+  route_prefix  = "${var.resource_id}-route"
 }
 
 resource "aws_vpc" "main" {
@@ -68,4 +69,32 @@ resource "aws_subnet" "management" {
   tags = {
     "Name" = "${local.subnet_prefix}-public-management-1${each.key}"
   }
+}
+
+resource "aws_route_table" "internet" {
+
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+
+  tags = {
+    "Name" = "${local.route_prefix}-internet"
+  }
+}
+
+resource "aws_route_table_association" "ingress_internet" {
+  for_each = var.subnet_cidr_block_ingress
+
+  subnet_id      = aws_subnet.ingress[each.key].id
+  route_table_id = aws_route_table.internet.id
+}
+
+resource "aws_route_table_association" "management_internet" {
+  for_each = var.subnet_cidr_block_management
+
+  subnet_id      = aws_subnet.management[each.key].id
+  route_table_id = aws_route_table.internet.id
 }
