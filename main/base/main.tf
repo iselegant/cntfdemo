@@ -12,8 +12,14 @@ provider "aws" {
 module "base" {
   source = "../../modules/combase"
 
-  resource_id       = var.resource_id
-  vpc_cidr_block_v4 = var.vpc_cidr_block_v4
+  region      = var.region
+  resource_id = var.resource_id
+
+  vpc_cidr_block_v4            = var.vpc_cidr_block_v4
+  subnet_cidr_block_ingress    = var.subnet_cidr_block_ingress
+  subnet_cidr_block_container  = var.subnet_cidr_block_container
+  subnet_cidr_block_db         = var.subnet_cidr_block_db
+  subnet_cidr_block_management = var.subnet_cidr_block_management
 }
 
 module "appbase" {
