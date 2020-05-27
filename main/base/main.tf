@@ -24,6 +24,11 @@ module "base" {
 
 module "appbase" {
   source = "../../modules/appbase"
+
+  resource_id = var.resource_id
+
+  vpc_main_id    = module.base.vpc_main_id
+  subnet_ingress = module.base.subnet_ingress
 }
 
 module "cicdbase" {

@@ -98,3 +98,14 @@ resource "aws_route_table_association" "management_internet" {
   subnet_id      = aws_subnet.management[each.key].id
   route_table_id = aws_route_table.internet.id
 }
+
+output "vpc_main_id" {
+  value = aws_vpc.main.id
+}
+
+output "subnet_ingress" {
+  value = {
+    for subnet in aws_subnet.ingress :
+    subnet.availability_zone => subnet.id
+  }
+}
