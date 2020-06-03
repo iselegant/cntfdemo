@@ -21,3 +21,5 @@ subnet_cidr_block_management = {
   "a" = "10.0.240.0/24"
   "c" = "10.0.241.0/24"
 }
+
+waf_header_string = "8f856a61-e356-45c9-91b3-0fb8f0ebc47a"

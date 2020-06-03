@@ -26,6 +26,9 @@ module "appbase" {
   source = "../../modules/appbase"
 
   resource_id = var.resource_id
+  region      = var.region
+
+  waf_header_string = var.waf_header_string
 
   vpc_main_id    = module.base.vpc_main_id
   subnet_ingress = module.base.subnet_ingress
