@@ -14,4 +14,7 @@ variable "subnet_cidr_block_db" {
 variable "subnet_cidr_block_management" {
   type = map(string)
 }
+variable "subnet_cidr_block_egress" {
+  type = map(string)
+}
 variable "waf_header_string" {}

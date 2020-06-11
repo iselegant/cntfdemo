@@ -20,6 +20,7 @@ module "base" {
   subnet_cidr_block_container  = var.subnet_cidr_block_container
   subnet_cidr_block_db         = var.subnet_cidr_block_db
   subnet_cidr_block_management = var.subnet_cidr_block_management
+  subnet_cidr_block_egress     = var.subnet_cidr_block_egress
 }
 
 module "appbase" {
