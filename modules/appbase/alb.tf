@@ -39,6 +39,21 @@ resource "aws_lb_listener" "public_blue" {
   }
 }
 
+resource "aws_lb_listener" "public_green" {
+  load_balancer_arn = aws_lb.public.arn
+  protocol          = "HTTP"
+  port              = "10080"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.dummy.arn
+  }
+
+  lifecycle {
+    ignore_changes = [default_action]
+  }
+}
+
 # 実際のECSタスクに紐づくターゲットグループ定義は同じライフサイクルである
 # ECSタスクと同じリソースライフサイクルであるmodulues/appで定義する。
 # 一方、Listener定義時にデフォルトアクションとしてターゲットグループを
@@ -62,4 +77,8 @@ output "lb_public_arn_suffix" {
 
 output "lb_listener_public_blue_arn" {
   value = aws_lb_listener.public_blue.arn
+}
+
+output "lb_listener_public_green_arn" {
+  value = aws_lb_listener.public_green.arn
 }

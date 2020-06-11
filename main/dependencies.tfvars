@@ -1,1 +1,0 @@
-aws_account_id = "dummy"
