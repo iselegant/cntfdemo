@@ -1,6 +1,7 @@
+variable "aws_account_id" {}
+
 variable "resource_id" {}
 variable "region" {}
-variable "aws_account_id" {}
 
 variable "vpc_cidr_block_v4" {}
 variable "subnet_cidr_block_ingress" {
