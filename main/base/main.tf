@@ -30,8 +30,9 @@ module "appbase" {
 
   waf_header_string = var.waf_header_string
 
-  vpc_main_id    = module.base.vpc_main_id
-  subnet_ingress = module.base.subnet_ingress
+  vpc_main_id               = module.base.vpc_main_id
+  security_group_ingress_id = module.base.security_group_ingress_id
+  subnet_ingress            = module.base.subnet_ingress
 }
 
 module "cicdbase" {

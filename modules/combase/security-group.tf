@@ -4,7 +4,7 @@ locals {
 
 resource "aws_security_group" "ingress" {
   name   = "${local.sg_pfx}-ingress"
-  vpc_id = var.vpc_main_id
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 80
@@ -16,4 +16,8 @@ resource "aws_security_group" "ingress" {
   tags = {
     "Name" = "${local.sg_pfx}-ingress"
   }
+}
+
+output "security_group_ingress_id" {
+  value = aws_security_group.ingress.id
 }
