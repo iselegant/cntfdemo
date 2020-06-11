@@ -1,11 +1,26 @@
 locals {
-  # FIXME: pfx -> prefix
-  sg_pfx = "${var.resource_id}-sg"
+  sg_prefix = "${var.resource_id}-sg"
+}
+
+resource "aws_security_group" "ingress" {
+  name   = "${local.sg_prefix}-ingress"
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    "Name" = "${local.sg_prefix}-ingress"
+  }
 }
 
 resource "aws_security_group" "vpce" {
 
-  name   = "${local.sg_pfx}-vpce"
+  name   = "${local.sg_prefix}-vpce"
   vpc_id = aws_vpc.main.id
 
   # Cloud9のセキュリティグループIDをTerraformリソースから取得できないため、
@@ -18,6 +33,10 @@ resource "aws_security_group" "vpce" {
   }
 
   tags = {
-    "Name" = "${local.sg_pfx}-vpce"
+    "Name" = "${local.sg_prefix}-vpce"
   }
+}
+
+output "security_group_ingress_id" {
+  value = aws_security_group.ingress.id
 }
