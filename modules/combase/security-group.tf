@@ -13,6 +13,14 @@ resource "aws_security_group" "ingress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 10080
+    to_port     = 10080
+    protocol    = "tcp"
+    cidr_blocks = ["${aws_eip.cloud9.public_ip}/32"]
+    description = "HTTP internal for Cloud9"
+  }
+
   tags = {
     "Name" = "${local.sg_prefix}-ingress"
   }
@@ -33,9 +41,9 @@ resource "aws_security_group" "vpce" {
   }
 
   ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
     security_groups = [aws_security_group.container.id]
   }
 
@@ -46,16 +54,16 @@ resource "aws_security_group" "vpce" {
 
 resource "aws_security_group" "container" {
 
-  name   = "${local.sg_prefix}-container"
-  vpc_id = aws_vpc.main.id
+  name        = "${local.sg_prefix}-container"
+  vpc_id      = aws_vpc.main.id
   description = "Security Group of VPC Container App"
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     security_groups = [aws_security_group.ingress.id]
-    description = "HTTP for Ingress"
+    description     = "HTTP for Ingress"
   }
 
   # Cloud9のセキュリティグループIDをTerraformリソースから取得できないため、

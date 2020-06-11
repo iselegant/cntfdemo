@@ -4,6 +4,7 @@ locals {
   subnet_prefix = "${var.resource_id}-subnet"
   route_prefix  = "${var.resource_id}-route"
   vpce_prefix   = "${var.resource_id}-vpce"
+  eip_prefix    = "${var.resource_id}-eip"
 
   subnet_egress_list = [
     for az_id in keys(var.subnet_cidr_block_egress) :
@@ -195,6 +196,14 @@ resource "aws_vpc_endpoint" "logs" {
 
   tags = {
     "Name" = "${local.vpc_name}-logs"
+  }
+}
+
+resource "aws_eip" "cloud9" {
+  vpc = true
+
+  tags = {
+    "Name" = "${local.eip_prefix}-cloud9"
   }
 }
 

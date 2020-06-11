@@ -27,8 +27,8 @@ module "app" {
 
   resource_id = var.resource_id
 
-  vpc_main_id                 = data.terraform_remote_state.base.outputs.vpc_main_id
-  lb_listener_public_blue_arn = data.terraform_remote_state.base.outputs.lb_listener_public_blue_arn
+  vpc_main_id                  = data.terraform_remote_state.base.outputs.vpc_main_id
+  lb_listener_public_blue_arn  = data.terraform_remote_state.base.outputs.lb_listener_public_blue_arn
   lb_listener_public_green_arn = data.terraform_remote_state.base.outputs.lb_listener_public_green_arn
 }
 
