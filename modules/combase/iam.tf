@@ -37,9 +37,8 @@ data "aws_iam_policy_document" "cloud9_policy" {
     effect  = "Allow"
     actions = ["ecr:ListImages"]
 
-    # FIXME: add AWS Account ID as tfvars
     # FIXME: replace repos name using tfvars
-    resources = ["arn:aws:ecr:${var.region}::repository/cnappdemo"]
+    resources = ["arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/cnappdemo"]
   }
 
   statement {
@@ -67,8 +66,7 @@ data "aws_iam_policy_document" "cloud9_policy" {
       "ecr:PutImage"
     ]
 
-    # FIXME: add AWS Account ID as tfvars
     # FIXME: replace repos name using tfvars
-    resources = ["arn:aws:ecr:${var.region}::repository/cnappdemo"]
+    resources = ["arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/cnappdemo"]
   }
 }

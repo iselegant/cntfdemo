@@ -12,8 +12,9 @@ provider "aws" {
 module "base" {
   source = "../../modules/combase"
 
-  region      = var.region
-  resource_id = var.resource_id
+  region         = var.region
+  resource_id    = var.resource_id
+  aws_account_id = var.aws_account_id
 
   vpc_cidr_block_v4            = var.vpc_cidr_block_v4
   subnet_cidr_block_ingress    = var.subnet_cidr_block_ingress
