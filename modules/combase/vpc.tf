@@ -185,6 +185,19 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   }
 }
 
+resource "aws_vpc_endpoint" "logs" {
+  vpc_id              = aws_vpc.main.id
+  vpc_endpoint_type   = "Interface"
+  service_name        = "com.amazonaws.${var.region}.logs"
+  subnet_ids          = local.subnet_egress_list
+  security_group_ids  = [aws_security_group.vpce.id]
+  private_dns_enabled = true
+
+  tags = {
+    "Name" = "${local.vpc_name}-logs"
+  }
+}
+
 output "vpc_main_id" {
   value = aws_vpc.main.id
 }
