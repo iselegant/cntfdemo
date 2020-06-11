@@ -2,6 +2,7 @@ variable "aws_account_id" {}
 
 variable "resource_id" {}
 variable "region" {}
+variable "demo_app_name" {}
 
 variable "vpc_cidr_block_v4" {}
 variable "subnet_cidr_block_ingress" {

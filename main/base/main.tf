@@ -14,8 +14,9 @@ module "base" {
 
   aws_account_id = var.aws_account_id
 
-  region         = var.region
-  resource_id    = var.resource_id
+  region        = var.region
+  resource_id   = var.resource_id
+  demo_app_name = var.demo_app_name
 
   vpc_cidr_block_v4            = var.vpc_cidr_block_v4
   subnet_cidr_block_ingress    = var.subnet_cidr_block_ingress
