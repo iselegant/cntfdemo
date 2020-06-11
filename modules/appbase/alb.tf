@@ -7,7 +7,7 @@ resource "aws_lb" "public" {
   name               = "${local.alb_pfx}-ingress"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.ingress.id]
+  security_groups    = [var.security_group_ingress_id]
   subnets = [
     for subnet_id in var.subnet_ingress :
     subnet_id
