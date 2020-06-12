@@ -68,6 +68,10 @@ data "aws_iam_policy_document" "cloud9_policy" {
   }
 }
 
+//resource "aws_iam_service_linked_role" "ecs" {
+//  aws_service_name = "ecs.amazonaws.com"
+//}
+
 resource "aws_iam_role" "codedeploy" {
   name               = "ecsCodeDeployRole"
   assume_role_policy = data.aws_iam_policy_document.codedeploy.json

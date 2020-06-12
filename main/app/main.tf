@@ -23,12 +23,25 @@ data "terraform_remote_state" "base" {
 module "app" {
   source = "../../modules/app"
 
-  lb_priority = var.lb_priority
+  lb_priority               = var.lb_priority
+  ecs_service_desired_count = var.ecs_service_desired_count
+  ecs_task_cpu              = var.ecs_task_cpu
+  ecs_task_memory           = var.ecs_task_memory
+  ecs_container_memory      = var.ecs_container_memory
+  ecs_container_cpu         = var.ecs_container_cpu
+  as_min_capacity           = var.as_min_capacity
+  as_max_capacity           = var.as_max_capacity
 
-  resource_id = var.resource_id
+  resource_id    = var.resource_id
+  region         = var.region
+  container_name = var.demo_app_name
 
   vpc_main_id                  = data.terraform_remote_state.base.outputs.vpc_main_id
+  subnet_container             = data.terraform_remote_state.base.outputs.subnet_container
+  security_group_container_id  = data.terraform_remote_state.base.outputs.security_group_container_id
   lb_listener_public_blue_arn  = data.terraform_remote_state.base.outputs.lb_listener_public_blue_arn
   lb_listener_public_green_arn = data.terraform_remote_state.base.outputs.lb_listener_public_green_arn
+  ecs_cluster_arn              = data.terraform_remote_state.base.outputs.ecs_cluster_arn
+  ecs_cluster_name             = data.terraform_remote_state.base.outputs.ecs_cluster_name
 }
 

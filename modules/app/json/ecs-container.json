@@ -1,0 +1,25 @@
+[
+  {
+    "name": "${container_name}",
+    "image": "${ecr_name}:${image_revision}",
+    "cpu": ${cpu},
+    "memoryReservation": ${memory},
+    "essential": true,
+    "network_mode": "awsvpc",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${awslogs_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "portMappings": [
+      {
+        "hostPort": 80,
+        "protocol": "tcp",
+        "containerPort": 80
+      }
+    ]
+  }
+]

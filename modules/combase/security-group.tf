@@ -84,6 +84,13 @@ resource "aws_security_group" "container" {
     description = "ICMP for Cloud9"
   }
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = {
     "Name" = "${local.sg_prefix}-container"
   }
@@ -91,4 +98,8 @@ resource "aws_security_group" "container" {
 
 output "security_group_ingress_id" {
   value = aws_security_group.ingress.id
+}
+
+output "security_group_container_id" {
+  value = aws_security_group.container.id
 }

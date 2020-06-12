@@ -217,3 +217,10 @@ output "subnet_ingress" {
     subnet.availability_zone => subnet.id
   }
 }
+
+output "subnet_container" {
+  value = {
+    for subnet in aws_subnet.container :
+    subnet.availability_zone => subnet.id
+  }
+}
