@@ -21,6 +21,13 @@ resource "aws_security_group" "ingress" {
     description = "HTTP internal for Cloud9"
   }
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = {
     "Name" = "${local.sg_prefix}-ingress"
   }
