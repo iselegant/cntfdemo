@@ -34,7 +34,3 @@ module "appbase" {
   security_group_ingress_id = module.base.security_group_ingress_id
   subnet_ingress            = module.base.subnet_ingress
 }
-
-module "cicdbase" {
-  source = "../../modules/cicdbase"
-}
