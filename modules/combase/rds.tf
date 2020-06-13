@@ -1,8 +1,8 @@
 locals {
-  aurora_prefix = "${var.resource_id}-db"
+  aurora_prefix         = "${var.resource_id}-db"
   db_subnet_group_name  = "${var.resource_id}-rds-subnet-group"
   aurora_engine         = "aurora-mysql"
-  aurora_engine_version = "5.7.mysql_aurora.2.07.2"   # 2020-06時点の最新のバージョン
+  aurora_engine_version = "5.7.mysql_aurora.2.07.2" # 2020-06時点の最新のバージョン
 
 }
 
@@ -18,12 +18,12 @@ resource "aws_db_subnet_group" "main" {
 
 # Aurora作成後、パスワードは適宜変更すること
 resource "aws_rds_cluster" "main" {
-  cluster_identifier        = local.aurora_prefix
-  engine                    = local.aurora_engine
-  engine_version            = local.aurora_engine_version
-  engine_mode               = "provisioned"
-  database_name             = var.resource_id
-  deletion_protection       = true
+  cluster_identifier  = local.aurora_prefix
+  engine              = local.aurora_engine
+  engine_version      = local.aurora_engine_version
+  engine_mode         = "provisioned"
+  database_name       = var.resource_id
+  deletion_protection = true
 
   availability_zones = [
     for az_id in keys(var.subnet_cidr_block_db) :

@@ -31,3 +31,4 @@ subnet_cidr_block_egress = {
 waf_header_string     = "8f856a61-e356-45c9-91b3-0fb8f0ebc47a"
 aurora_instance_count = 2
 aurora_instance_class = "db.t2.small"
+ssm_params_db_user    = "cnapp_user"

@@ -199,6 +199,19 @@ resource "aws_vpc_endpoint" "logs" {
   }
 }
 
+resource "aws_vpc_endpoint" "ssm" {
+  vpc_id              = aws_vpc.main.id
+  vpc_endpoint_type   = "Interface"
+  service_name        = "com.amazonaws.${var.region}.ssm"
+  subnet_ids          = local.subnet_egress_list
+  security_group_ids  = [aws_security_group.vpce.id]
+  private_dns_enabled = true
+
+  tags = {
+    "Name" = "${local.vpc_name}-ssm"
+  }
+}
+
 resource "aws_eip" "cloud9" {
   vpc = true
 

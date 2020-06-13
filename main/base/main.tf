@@ -26,6 +26,7 @@ module "base" {
   subnet_cidr_block_egress     = var.subnet_cidr_block_egress
   aurora_instance_count        = var.aurora_instance_count
   aurora_instance_class        = var.aurora_instance_class
+  ssm_params_db_user           = var.ssm_params_db_user
 }
 
 module "appbase" {

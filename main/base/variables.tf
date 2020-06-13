@@ -20,6 +20,8 @@ variable "subnet_cidr_block_management" {
 variable "subnet_cidr_block_egress" {
   type = map(string)
 }
-variable "waf_header_string" {}
 variable "aurora_instance_count" {}
 variable "aurora_instance_class" {}
+variable "ssm_params_db_user" {}
+
+variable "waf_header_string" {}

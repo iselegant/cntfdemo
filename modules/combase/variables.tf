@@ -22,3 +22,4 @@ variable "subnet_cidr_block_egress" {
 }
 variable "aurora_instance_count" {}
 variable "aurora_instance_class" {}
+variable "ssm_params_db_user" {}
