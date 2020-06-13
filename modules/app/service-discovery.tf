@@ -1,14 +1,8 @@
-# FIXME: move this resource file to appbase
-resource "aws_service_discovery_private_dns_namespace" "common" {
-  name = "local"
-  vpc  = var.vpc_main_id
-}
-
 resource "aws_service_discovery_service" "app" {
   name = "${var.resource_id}-ecs-service"
 
   dns_config {
-    namespace_id = aws_service_discovery_private_dns_namespace.common.id
+    namespace_id = var.sd_ns_common_id
 
     dns_records {
       ttl  = 60
@@ -17,4 +11,3 @@ resource "aws_service_discovery_service" "app" {
     routing_policy = "MULTIVALUE"
   }
 }
-

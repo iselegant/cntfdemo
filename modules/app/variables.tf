@@ -20,5 +20,6 @@ variable "ecs_cluster_arn" {}
 variable "ecs_cluster_name" {}
 variable "ecs_task_role_arn" {}
 variable "ecs_codedeploy_role_arn" {}
+variable "sd_ns_common_id" {}
 
 variable "container_name" {}

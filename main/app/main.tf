@@ -46,5 +46,6 @@ module "app" {
   ecs_cluster_name             = data.terraform_remote_state.base.outputs.ecs_cluster_name
   ecs_task_role_arn            = data.terraform_remote_state.base.outputs.ecs_task_role_arn
   ecs_codedeploy_role_arn      = data.terraform_remote_state.base.outputs.ecs_codedeploy_role_arn
+  sd_ns_common_id              = data.terraform_remote_state.base.outputs.sd_ns_common_id
 }
 
