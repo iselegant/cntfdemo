@@ -1,6 +1,7 @@
 variable "resource_id" {}
 variable "region" {}
 
+variable "app_name" {}
 variable "lb_priority" {}
 variable "ecs_service_desired_count" {}
 variable "ecs_task_cpu" {}
@@ -17,5 +18,6 @@ variable "lb_listener_public_blue_arn" {}
 variable "lb_listener_public_green_arn" {}
 variable "ecs_cluster_arn" {}
 variable "ecs_cluster_name" {}
+variable "ecs_codedeploy_role_arn" {}
 
 variable "container_name" {}

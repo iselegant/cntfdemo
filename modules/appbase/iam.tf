@@ -1,0 +1,30 @@
+resource "aws_iam_role" "ecs_codedeploy" {
+  name               = "ecsCodeDeployRole"
+  assume_role_policy = data.aws_iam_policy_document.ecs_codedeploy.json
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_codedeploy" {
+  role       = aws_iam_role.ecs_codedeploy.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECSLimited"
+}
+
+data "aws_iam_policy_document" "ecs_codedeploy" {
+  version = "2012-10-17"
+
+  statement {
+    sid    = ""
+    effect = "Allow"
+    actions = [
+    "sts:AssumeRole"]
+
+    principals {
+      type = "Service"
+      identifiers = [
+      "codedeploy.amazonaws.com"]
+    }
+  }
+}
+
+output "ecs_codedeploy_role_arn" {
+  value = aws_iam_role.ecs_codedeploy.arn
+}

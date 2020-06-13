@@ -36,6 +36,7 @@ module "app" {
   region         = var.region
   container_name = var.demo_app_name
 
+  app_name                     = var.app_name
   vpc_main_id                  = data.terraform_remote_state.base.outputs.vpc_main_id
   subnet_container             = data.terraform_remote_state.base.outputs.subnet_container
   security_group_container_id  = data.terraform_remote_state.base.outputs.security_group_container_id
@@ -43,5 +44,6 @@ module "app" {
   lb_listener_public_green_arn = data.terraform_remote_state.base.outputs.lb_listener_public_green_arn
   ecs_cluster_arn              = data.terraform_remote_state.base.outputs.ecs_cluster_arn
   ecs_cluster_name             = data.terraform_remote_state.base.outputs.ecs_cluster_name
+  ecs_codedeploy_role_arn      = data.terraform_remote_state.base.outputs.ecs_codedeploy_role_arn
 }
 

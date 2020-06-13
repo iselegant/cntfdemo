@@ -67,39 +67,3 @@ data "aws_iam_policy_document" "cloud9_policy" {
     resources = ["arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/${var.demo_app_name}"]
   }
 }
-
-//resource "aws_iam_service_linked_role" "ecs" {
-//  aws_service_name = "ecs.amazonaws.com"
-//}
-
-resource "aws_iam_role" "codedeploy" {
-  name               = "ecsCodeDeployRole"
-  assume_role_policy = data.aws_iam_policy_document.codedeploy.json
-}
-
-resource "aws_iam_role_policy" "codedeploy" {
-  name = "${var.resource_id}-AccessingECRRepositoryPolicy"
-  role = aws_iam_role.cloud9.id
-
-  policy = data.aws_iam_policy_document.cloud9_policy.json
-}
-
-data "aws_iam_policy_document" "codedeploy" {
-  version = "2012-10-17"
-
-  statement {
-    sid     = ""
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["codedeploy.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "codedeploy" {
-  role       = aws_iam_role.codedeploy.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
-}

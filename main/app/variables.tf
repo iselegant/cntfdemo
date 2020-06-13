@@ -4,6 +4,7 @@ variable "resource_id" {}
 variable "region" {}
 variable "demo_app_name" {}
 
+variable "app_name" {}
 variable "lb_priority" {}
 variable "ecs_service_desired_count" {}
 variable "ecs_task_cpu" {}

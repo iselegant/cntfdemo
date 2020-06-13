@@ -1,6 +1,7 @@
 # ---------------------------------
 #  Scope: local
 # ---------------------------------
+app_name                  = "cnappdemo"
 lb_priority               = 1
 ecs_service_desired_count = 2
 ecs_task_cpu              = "512"

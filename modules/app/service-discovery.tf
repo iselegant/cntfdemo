@@ -1,3 +1,4 @@
+# FIXME: move this resource file to appbase
 resource "aws_service_discovery_private_dns_namespace" "common" {
   name = "local"
   vpc  = var.vpc_main_id
