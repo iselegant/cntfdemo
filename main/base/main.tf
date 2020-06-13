@@ -25,7 +25,3 @@ module "base" {
 module "appbase" {
   source = "../../modules/appbase"
 }
-
-module "cicdbase" {
-  source = "../../modules/cicdbase"
-}
