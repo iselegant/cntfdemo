@@ -44,6 +44,7 @@ module "app" {
   lb_listener_public_green_arn = data.terraform_remote_state.base.outputs.lb_listener_public_green_arn
   ecs_cluster_arn              = data.terraform_remote_state.base.outputs.ecs_cluster_arn
   ecs_cluster_name             = data.terraform_remote_state.base.outputs.ecs_cluster_name
+  ecs_task_role_arn            = data.terraform_remote_state.base.outputs.ecs_task_role_arn
   ecs_codedeploy_role_arn      = data.terraform_remote_state.base.outputs.ecs_codedeploy_role_arn
 }
 

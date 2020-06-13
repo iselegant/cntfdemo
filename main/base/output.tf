@@ -30,6 +30,10 @@ output "ecs_cluster_name" {
   value = module.appbase.ecs_cluster_name
 }
 
+output "ecs_task_role_arn" {
+  value = module.appbase.ecs_task_role_arn
+}
+
 output "ecs_codedeploy_role_arn" {
   value = module.appbase.ecs_codedeploy_role_arn
 }

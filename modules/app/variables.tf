@@ -18,6 +18,7 @@ variable "lb_listener_public_blue_arn" {}
 variable "lb_listener_public_green_arn" {}
 variable "ecs_cluster_arn" {}
 variable "ecs_cluster_name" {}
+variable "ecs_task_role_arn" {}
 variable "ecs_codedeploy_role_arn" {}
 
 variable "container_name" {}

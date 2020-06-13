@@ -61,7 +61,7 @@ resource "aws_ecs_task_definition" "app" {
   family                   = "${var.resource_id}-ecs-task"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  execution_role_arn       = aws_iam_role.ecs_task.arn
+  execution_role_arn       = var.ecs_task_role_arn
   cpu                      = var.ecs_task_cpu
   memory                   = var.ecs_task_memory
 
