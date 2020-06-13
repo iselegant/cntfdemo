@@ -34,12 +34,6 @@ resource "aws_ecs_service" "common" {
     container_port   = 80
   }
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.green.arn
-    container_name   = var.container_name
-    container_port   = 80
-  }
-
   health_check_grace_period_seconds = 120
 
   network_configuration {
