@@ -20,3 +20,5 @@ variable "subnet_cidr_block_management" {
 variable "subnet_cidr_block_egress" {
   type = map(string)
 }
+variable "aurora_instance_count" {}
+variable "aurora_instance_class" {}

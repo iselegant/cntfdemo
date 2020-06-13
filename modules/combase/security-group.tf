@@ -103,6 +103,32 @@ resource "aws_security_group" "container" {
   }
 }
 
+resource "aws_security_group" "db" {
+
+  name        = "${local.sg_prefix}-db"
+  vpc_id      = aws_vpc.main.id
+  description = "Security Group of Database"
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = values(var.subnet_cidr_block_management)
+    description = "MySQL protocol from Cloud9"
+  }
+
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.container.id]
+  }
+
+  tags = {
+    "Name" = "${local.sg_prefix}-vpce"
+  }
+}
+
 output "security_group_ingress_id" {
   value = aws_security_group.ingress.id
 }

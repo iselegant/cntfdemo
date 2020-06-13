@@ -67,3 +67,29 @@ data "aws_iam_policy_document" "cloud9_policy" {
     resources = ["arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/${var.demo_app_name}"]
   }
 }
+
+resource "aws_iam_role" "rds_monitoring" {
+  name               = "${var.resource_id}-rds-monitoring-role"
+  assume_role_policy = data.aws_iam_policy_document.rds_monitoring.json
+}
+
+resource "aws_iam_role_policy_attachment" "rds_monitoring" {
+  role       = aws_iam_role.rds_monitoring.id
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+}
+
+data "aws_iam_policy_document" "rds_monitoring" {
+  version = "2012-10-17"
+
+  statement {
+    sid    = "RDSMonitoringRole"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["monitoring.rds.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}

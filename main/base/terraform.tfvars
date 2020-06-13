@@ -7,6 +7,7 @@ subnet_cidr_block_ingress = {
   "a" = "10.0.0.0/24"
   "c" = "10.0.1.0/24"
 }
+
 subnet_cidr_block_container = {
   "a" = "10.0.8.0/24"
   "c" = "10.0.9.0/24"
@@ -27,4 +28,6 @@ subnet_cidr_block_egress = {
   "c" = "10.0.249.0/24"
 }
 
-waf_header_string = "8f856a61-e356-45c9-91b3-0fb8f0ebc47a"
+waf_header_string     = "8f856a61-e356-45c9-91b3-0fb8f0ebc47a"
+aurora_instance_count = 2
+aurora_instance_class = "db.t2.small"

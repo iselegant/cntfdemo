@@ -24,6 +24,8 @@ module "base" {
   subnet_cidr_block_db         = var.subnet_cidr_block_db
   subnet_cidr_block_management = var.subnet_cidr_block_management
   subnet_cidr_block_egress     = var.subnet_cidr_block_egress
+  aurora_instance_count        = var.aurora_instance_count
+  aurora_instance_class        = var.aurora_instance_class
 }
 
 module "appbase" {
