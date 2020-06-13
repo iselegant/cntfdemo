@@ -180,7 +180,7 @@ resource "aws_wafregional_rule" "header" {
 
   predicate {
     data_id = aws_wafregional_byte_match_set.header.id
-    negated = true
+    negated = false
     type    = "ByteMatch"
   }
 
