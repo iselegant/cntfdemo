@@ -2,6 +2,7 @@
 
 - TODO: TerraForm APPlication for cloud Native
 - TODO: コンテナとCI/CDに関するAWSリソース作成用のInfrastructure as Codeを提供
+- TODO: TerraformとTerragruntについての詳細説明については割愛する旨(リンクを記載)
 
 ## cntfappで実現できること
 
@@ -44,6 +45,18 @@
 - TODO: Terragruntのインストール
 
 ### 実行とAWSリソースの作成
+
+## リソースの削除
+
+- TODO: Terraformリソースと手動で作成したリソースで手順が異なる旨
+
+### Terraformリソースの削除
+
+- TODO: Terraformリソースの削除手順
+
+### 手動で作成したAWSリソースの削除
+
+- TODO: 手動で作成したAWSリソースの削除手順
 
 ## 料金に関する補足
 
