@@ -49,3 +49,8 @@ module "app" {
   sd_ns_common_id              = data.terraform_remote_state.base.outputs.sd_ns_common_id
 }
 
+module "cicdbase" {
+  source = "../../modules/cicdbase"
+
+  resource_id    = var.resource_id
+}
