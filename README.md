@@ -25,10 +25,7 @@
 ## 利用に際した前提事項
 
 - TODO: 実行はAmazon Cloud9を利用する旨
-<<<<<<< HEAD
-=======
   - AdministratorsRole相当の権限を有するIAMユーザーで作成
->>>>>>> 53770f7... update REDOME - terraform install
 
 ### 環境利用のためのセットアップ
 
@@ -40,15 +37,6 @@
 - TODO: aws-vaultのインストール
 - TODO: AWSアクセスキーの作成
 
-<<<<<<< HEAD
-### Terraformのインストール
-
-- TODO: Terraformのインストール
-
-### Terragruntのインストール
-
-- TODO: Terragruntのインストール
-=======
 ### tfenvのインストール
 
 - TODO: tfenvバージョンの最新化
@@ -129,7 +117,6 @@ $ sudo mv terragrunt /usr/local/bin/
 $ terragrunt -v
 terragrunt version v0.23.31
 ```
->>>>>>> 53770f7... update REDOME - terraform install
 
 ### 実行とAWSリソースの作成
 
