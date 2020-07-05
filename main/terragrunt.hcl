@@ -17,6 +17,7 @@ terraform {
     required_var_files = [
       "${get_terragrunt_dir()}/terraform.tfvars",
       "${get_parent_terragrunt_dir()}/terraform.tfvars",
+      "${get_parent_terragrunt_dir()}/dependencies.tfvars",
     ]
   }
 }

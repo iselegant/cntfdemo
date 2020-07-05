@@ -52,5 +52,11 @@ module "app" {
 module "cicdbase" {
   source = "../../modules/cicdbase"
 
-  resource_id    = var.resource_id
+  aws_account_id = var.aws_account_id
+  resource_id = var.resource_id
+  region      = var.region
+
+  app_name    = var.demo_app_name
+  repo_name = "${var.resource_id}-repo"
+  codebuild_name = "${var.resource_id}-codebuild"
 }
