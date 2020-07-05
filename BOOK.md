@@ -93,6 +93,11 @@ aws_account_id = "dummy"
 
 ### Step3-1の実行
 
+``` base
+$ cd ~/terraform/cntfdemo/main/base/
+
+```
+
 ### Step3-2の実行
 
 ### Step3-3の実行
