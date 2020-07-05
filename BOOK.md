@@ -8,7 +8,12 @@
 - TODO: ハンズオンではなく、IaCベースで進めたい方向けに提供している旨
 - TODO: ブランチを切り替えることで本書に対応している旨
 
-## 利用に関する注意事項
+## 利用に関する前提事項
+
+本手順はREDOME.mdに記載の内容を基に作成しています。
+事前にREDOME.mdを参照いただき、必要な環境をセットアップした上で実施してください。
+
+## 注意事項
 
 ### Terraform対象外のAWSリソース
 
@@ -18,7 +23,7 @@
 そのため、書籍内で扱うすべてのAWSリソースを本ソースコードから作成できるわけではありません。
 このようなAWSリソースについては、各Stepのリソース作成手順内にて適宜補足していきます。
 
-### 一部のTerraformリソース引数のダミー値
+### 一部Terraformリソースの引数について
 
 Amazon AuroraやAmazon Systems Managerパラメーターストアなどで扱う認証情報等においては、Terraformソースコード上はダミー値として定義し、Terraformでの差分検知対象外としています(一般的にクレデンシャルとして扱われる情報はソースコード等のフラットに扱われるファイルに記述すべきではない、という思想です)。
 
@@ -27,10 +32,58 @@ Amazon AuroraやAmazon Systems Managerパラメーターストアなどで扱う
 
 ## 事前の設定事項
 
-- TODO: Cloud9上でブランチをpullしていく
-- TODO: dependencies.tfの作成手順
+### ソースコードの取得
 
-### 3章に関する手順
+REDOME.mdで作成したCloud9上で必要なブランチを取得します。
+
+``` bash
+$ mkdir terraform; ls -l; cd terraform
+
+$ git clone https://github.com/iselegant/cntfdemo
+
+$ cd cntfdemo
+
+$ git branch
+  cnfs/chap-3_step-1
+  cnfs/chap-3_step-2
+  cnfs/chap-3_step-3
+  cnfs/chap-3_step-4
+  cnfs/chap-3_step-5
+  cnfs/chap-4_step-1
+  cnfs/chap-4_step-2
+  cnfs/chap-4_step-3
+  cnfs/chap-4_step-4
+* master
+
+$ git pull --all
+Already up-to-date.
+
+$ git checkout cnfs/chap-3_step-1
+Switched to branch 'cnfs/chap-3_step-1'
+Your branch is up-to-date with 'origin/cnfs/chap-3_step-1'.
+```
+
+- TODO: git cloneの出力結果を記載する
+
+### Terraform内一部変数も設定
+
+ソースコードを取得後、事前にそれぞれのAWS環境に合わせたTerraform変数の設定が必要となります。
+以下ファイルを修正し、変数の値を書き換えてください。
+
+``` bash
+# dependiencies.tfのdummyを各AWSアカウントIDに書き換える
+# 例) "dummy" -> "0123456789012"
+$ cat main/dependencies.tfvars 
+aws_account_id = "dummy"
+```
+
+## 3章に関する手順
+
+以下のように各章の各Stepと本リポジトリのブランチについて、1対1で紐付いています。
+
+<img src="./images/branches.jpg" width="512" alt="ブランチと書籍内で作成するAWSリソースの対応について">
+
+そのため、各Step毎にブランチ切り替えながら`terragrunt apply`を実行していくのが基本的な流れです。
 
 ### Step3-2の実行
 
