@@ -53,10 +53,13 @@ module "cicdbase" {
   source = "../../modules/cicdbase"
 
   aws_account_id = var.aws_account_id
-  resource_id = var.resource_id
-  region      = var.region
+  resource_id    = var.resource_id
+  region         = var.region
 
-  app_name    = var.demo_app_name
-  repo_name = "${var.resource_id}-repo"
-  codebuild_name = "${var.resource_id}-codebuild"
+  app_name          = var.demo_app_name
+  repo_name         = "${var.resource_id}-repo"
+  codebuild_name    = "${var.resource_id}-codebuild"
+  codepipeline_name = "${var.resource_id}-codepipeline"
+  ecs_cluster_name  = data.terraform_remote_state.base.outputs.ecs_cluster_name
+  ecs_service_name  = data.terraform_remote_state.base.outputs
 }
