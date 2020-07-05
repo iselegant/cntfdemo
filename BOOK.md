@@ -1,4 +1,4 @@
-# Terraformを利用したｔ書籍「xxx」のハンズオン実施
+# Terraformを利用した書籍「xxx」のハンズオン実施
 
 - TODO: 書籍名が決まったらタイトル修正
 
@@ -78,7 +78,7 @@ Your branch is up-to-date with 'origin/cnfs/chap-3_step-1'.
 ``` bash
 # dependiencies.tfのdummyを利用するAWS環境のAWSアカウントIDに書き換える
 # 例) "dummy" -> "0123456789012"
-$ cat main/dependencies.tfvars 
+$ cat main/dependencies.tfvars
 aws_account_id = "dummy"
 ```
 
@@ -93,14 +93,110 @@ aws_account_id = "dummy"
 
 ### Step3-1の実行
 
-``` base
-$ cd ~/terraform/cntfdemo/main/base/
+``` bash
+# 共通系AWSリソースの作成
 
+# 対象ステップのブランチ切り替え
+$ git checkout cnfs/chap-3_step-1
+
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/base/
+$ terragrunt apply
+[terragrunt] [/home/ec2-user/terraform/cntfdemo/main/base] 2020/07/05 07:43:37 Running command: terraform --version
+[terragrunt] 2020/07/05 07:43:37 Terraform version: 0.12.25
+[terragrunt] 2020/07/05 07:43:37 Reading Terragrunt config file at /home/ec2-user/terraform/cntfdemo/main/base/terragrunt.hcl
+[terragrunt] [/home/ec2-user/terraform/cntfdemo/main/base] 2020/07/05 07:43:38 Initializing remote state for the s3 backend
+[terragrunt] [/home/ec2-user/terraform/cntfdemo/main/base] 2020/07/05 07:43:38 Running command: terraform init -backend-config=bucket=cnapp-terraform-513132288478 -backend-config=dynamodb_table=cnapp-terraform-state-lock -backend-config=encrypt=true -backend-config=key=base/terraform.tfstate -backend-config=region=ap-northeast-1
+Initializing modules...
+- appbase in ../../modules/appbase
+- base in ../../modules/combase
+
+:
+
+Plan: 15 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value:   # [yes]と入力する
+
+:
+
+module.base.aws_vpc.main: Creating...
+module.base.aws_vpc.main: Creation complete after 2s [id=vpc-059425c3f640195ca]
+module.base.aws_subnet.db["c"]: Creating...
+:
+module.base.aws_route_table_association.management_internet["c"]: Creation complete after 0s [id=rtbassoc-0ad2c008fe8d0632a]
+module.base.aws_route_table_association.ingress_internet["c"]: Creation complete after 0s [id=rtbassoc-0e38fa3c877710d92]
+
+Apply complete! Resources: 15 added, 0 changed, 0 destroyed.
+
+# 上記のように「Apply complete!」と表示されていれば成功
 ```
 
 ### Step3-2の実行
 
+``` bash
+# 共通系AWSリソースの作成
+
+# 対象ステップのブランチ切り替え
+$ git checkout cnfs/chap-3_step-2
+
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/base/
+$ terragrunt apply
+
+# Step3-1同様に、「yes」と入力し、「Apply complete!」の表示を確認
+# ALBの作成には2-3分ほど時間を要するはず(作者実績の場合、2分42秒要した)
+```
+
+``` bash
+# アプリケーション系AWSリソースの作成
+
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/app/
+$ terragrunt apply
+```
+
 ### Step3-3の実行
+
+Step3-3ではCloud9の作成が必要ですが、Terraformでの作成は行いません。
+なぜかというと、Cloud9のIDEを開くことができるのはCloud9を作成したIAMユーザのみとなります。
+そのため、後続でCloud9を開くためにIAMユーザーのAWSアクセスキーを払い出して環境変数としてセットし、その情報を基にTerraformを実行するという流れが少々複雑となるからです。
+
+また、TerraformにてCloud9リソース自体を作成することは可能ですが、Cloud9から間接的に作成されるEC2のインスタンス情報について、Terraformリソースをベースに参照することが出来ません。
+そのため、ハンズオン内で行うEIPやインスタンスプロファイルの関連付けに対してどうしても手動フォローが必要となります。
+
+ここでは構築をシンプルにするため、Cloud9及びこれに関連する紐付け作業においては手動で行います。
+
+1. 共通系AWSリソースの作成
+
+``` bash
+# 対象ステップのブランチ切り替え
+$ git checkout cnfs/chap-3_step-3
+
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/base/
+$ terragrunt apply
+
+# Step3-1同様に、「yes」と入力し、「Apply complete!」の表示を確認
+# VPCエンドポイントの作成には2分ほど時間を要する(筆者実績では1分43秒要した)
+```
+
+2. アプリケーション関連AWSリソースの作成
+
+``` bash
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/app/
+$ terragrunt apply
+```
+
+3. 書籍内の「3.4.3 管理用インスタンスの作成 - IAMロールの作成と関連付け」を実施する。
+ただし、IAMロール自体はTerraformにより作成されているため、Ec2インスタンスへの関連付けのみを行う。
+IAMロールの関連付け完了後、手順に従ってCloud9のAMTCを無効化する。
+
+4. 書籍内の「3.4.6 コンテナイメージビルドとレジストリ登録」を実施する。
 
 ### Step3-4の実行
 
