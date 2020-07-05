@@ -52,5 +52,6 @@ module "app" {
 module "cicdbase" {
   source = "../../modules/cicdbase"
 
-  resource_id    = var.resource_id
+  resource_id = var.resource_id
+  repo_name   = "${var.resource_id}-repo"
 }
