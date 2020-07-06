@@ -150,7 +150,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
     sid    = "CodeCommit"
     effect = "Allow"
     resources = [
-    "arn:aws:codecommit:${var.region}:${var.aws_account_id}:${var.resource_id}-repo"]
+    "arn:aws:codecommit:${var.region}:${var.aws_account_id}:${var.repo_name}"]
     actions = [
       "codecommit:CancelUploadArchive",
       "codecommit:GetBranch",

@@ -8,4 +8,3 @@ variable "repo_name" {}
 variable "codebuild_name" {}
 variable "codepipeline_name" {}
 variable "ecs_cluster_name" {}
-variable "ecs_service_name" {}
