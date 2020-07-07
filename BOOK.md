@@ -193,12 +193,42 @@ $ terragrunt apply
 ```
 
 3. 書籍内の「3.4.3 管理用インスタンスの作成 - IAMロールの作成と関連付け」を実施する。
-ただし、IAMロール自体はTerraformにより作成されているため、Ec2インスタンスへの関連付けのみを行う。
+ただし、IAMロール自体はTerraformにより作成されているため、EC2インスタンスへの関連付けのみを行う。
 IAMロールの関連付け完了後、手順に従ってCloud9のAMTCを無効化する。
 
 4. 書籍内の「3.4.6 コンテナイメージビルドとレジストリ登録」を実施する。
 
 ### Step3-4の実行
+
+Step3-4ではほぼTerraformのみで必要なAWSリソースを作成することができます。
+以下手順の通り、AWSリソース作成後に確認作業のみ手動で実施してください。
+
+1. 共通系AWSリソースの作成
+
+``` bash
+# 対象ステップのブランチ切り替え
+$ git checkout cnfs/chap-3_step-4
+
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/base/
+$ terragrunt apply
+
+# Step3-1同様に、「yes」と入力し、「Apply complete!」の表示を確認
+# VPCエンドポイントの作成には2分ほど時間を要する(筆者実績では1分43秒要した)
+```
+
+2. アプリケーション関連AWSリソースの作成
+
+``` bash
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/app/
+
+# template providerのインストールが必要であるため、apply前にinitを実行する
+$ terragrunt init
+$ terragrunt apply
+```
+
+3. 書籍内の「3.5.7 コンテナデプロイ確認」を実施する。
 
 ### Step3-5の実行
 
