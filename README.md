@@ -1,13 +1,22 @@
 # cntfapp
 
-- TODO: TerraForm APPlication for cloud Native
-- TODO: コンテナとCI/CDに関するAWSリソース作成用のInfrastructure as Codeを提供
-- TODO: TerraformとTerragruntについての詳細説明については割愛する旨(リンクを記載)
-
 ## cntfappで実現できること
 
-- TODO: アプリケーションの内容(TerraformによるAWS環境構築)
-- TODO: 書籍に連動している旨
+cntfappはクラウドネイティブなAWSサービス構成を構築できるハンズオン向けTerraformソースコードです。
+Amazon ECSやAWS Fargate、Amazon Codeシリーズを中心としたコンテナ・CI/CDの作成を行うことができます。
+cntfappのTerraformを実行することで、以下のような環境を構築することが可能となっています。
+
+<img src="./images/architecture.png" alt="cntfappで作成可能なAWS構成">
+
+cntfappではTerraformとTerragruntを利用していますが、これらのOSSの説明は割愛します。
+内容を確認したい方は以下をご参照ください。
+
+- [Terraform Website](https://www.terraform.io/)
+- [Terraform - GitHub](https://github.com/hashicorp/terraform)
+- [Terragrunt - Website](https://terragrunt.gruntwork.io/)
+- [Terragrunt - GitHub](https://github.com/gruntwork-io/terragrunt) 
+
+本ソースコードは筆者の書籍「AWSで学ぶクラウドネイティブ実践入門」内ハンズオンとして提供している環境構築に対応しています。本書と連動して作成を行う場合は、ソースコード内 BOOK.md を参照してください。
 
 ## OSSと利用前提事項
 
@@ -24,18 +33,31 @@
 
 ## 利用に際した前提事項
 
-- TODO: 実行はAmazon Cloud9を利用する旨
-  - AdministratorsRole相当の権限を有するIAMユーザーで作成
+cntfappは以下のようにAWS Cloud9上でのTerraform/Terragrunt実行を前提に作成しています。
 
-### 環境利用のためのセットアップ
+<img src="./images/terraform-env.png" width="512" alt="Terraform利用環境">
+
+Terraformを利用した複数開発者によるAWSリソース競合を避けるため、ロックファイルをDynamoDB上で管理します。
+また、AWSリソースの作成状態を管理するstateファイルをS3上に管理します。
+Terraformではこのstateファイルが非常に重要な位置づけとなっており、S3は暗号化及びバージョニングの設定を行っています。
+
+また、Cloud9では一時クレデンシャル(AMTC: AWS Managed Temporary Credentials)が利用できますが、この権限では今回のTerraformハンズオンで一部作成できないリソースが存在します。
+そのため、明示的にAdministratorRoleをインスタンスプロファイルとしてCloud9用EC2インスタンスにアタッチする方針となっています。
+
+次に示す手順を実施し、実行環境のセットアップから実施してください。
+
+## 環境利用のためのセットアップ
 
 ### Terraform利用の準備
 
-- TODO: Amazon S3の作成
+#### Amazon S3 Bucket
+
+
+
 - TODO: Amazon DynamoDBの作成
 - TODO: Amazon Cloud9の作成
-- TODO: aws-vaultのインストール
-- TODO: AWSアクセスキーの作成
+- TODO: IAMロールの作成
+- TODO: インスタンスプロファイルの付与
 
 ### tfenvのインストール
 
@@ -135,3 +157,15 @@ terragrunt version v0.23.31
 ## 料金に関する補足
 
 - TODO: 1枚もので料金がわかる図を作成
+
+## 免責事項
+
+cntfappは利用者ご自身の判断と責任において行われるものとします。
+筆者が掲載する文書・画像・ソフトウェア・リンクその他各種情報等については、慎重に作成、管理いたしますが、筆者がすべての情報の正確性、完全性および元となる情報との同一性を保証するものではございません。
+予めご了承ください。
+
+cntfappの内容の全部または一部をお客様へ事前の告知なしに変更する場合があります。
+記載された情報の正確性を保つようには努めていますが、万一記載情報が事実と異なる場合は、Issueしてお知らせください。
+
+cntfapp上から入手された情報により発生したあらゆる損害に関して一切の責任を負いません。
+ここに掲載する情報およびリンクが設定されている他のサイトから取得された各種情報の利用によって生じたあらゆる損害に関しても一切の責任を負いません。
