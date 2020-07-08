@@ -1,8 +1,6 @@
-# Terraformを利用した書籍「xxx」のハンズオン実施
+# Terraformを利用した書籍「AWSで学ぶクラウドネイティブ実践入門」のハンズオン実施
 
-- TODO: 書籍名が決まったらタイトル修正
-
-本リポジトリのTerraformソースコードは書籍「xxxx」の内容と連動してAWSリソースを作成することができます。
+本リポジトリのTerraformソースコードは書籍「AWSで学ぶクラウドネイティブ実践入門」の内容と連動してAWSリソースを作成することができます。
 具体的には、書籍内3章で作成するVPCやサブネットといったネットワークの設定、ECSなどのコンテナ定義といったリソースや4章で作成するCodeCommitやCodePipelineなどのリソースについて、各章内のStepと併せて作成することができます。
 
 普段AWSマネジメントコンソールからの作業ではなく、IaCなどTerraformを利用している方はこちらのソースコードを利用したハンズオンとしてご活用ください。
@@ -67,8 +65,6 @@ $ git checkout cnfs/chap-3_step-1
 Switched to branch 'cnfs/chap-3_step-1'
 Your branch is up-to-date with 'origin/cnfs/chap-3_step-1'.
 ```
-
-- TODO: git cloneの出力結果を記載する
 
 ### Terraform内一部変数も設定
 
