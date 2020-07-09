@@ -49,8 +49,8 @@ module "app" {
   sd_ns_common_id              = data.terraform_remote_state.base.outputs.sd_ns_common_id
 }
 
-module "cicdbase" {
-  source = "../../modules/cicdbase"
+module "cicd" {
+  source = "../../modules/cicd"
 
   aws_account_id = var.aws_account_id
   resource_id    = var.resource_id
@@ -60,5 +60,8 @@ module "cicdbase" {
   repo_name         = "${var.resource_id}-repo"
   codebuild_name    = "${var.resource_id}-codebuild"
   codepipeline_name = "${var.resource_id}-codepipeline"
-  ecs_cluster_name  = data.terraform_remote_state.base.outputs.ecs_cluster_name
+
+  s3_artifact_bucket    = data.terraform_remote_state.base.outputs.s3_artifact_bucket
+  codebuild_role_arn    = data.terraform_remote_state.base.outputs.codebuild_role_arn
+  codepipeline_role_arn = data.terraform_remote_state.base.outputs.codepipeline_role_arn
 }
