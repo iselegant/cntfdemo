@@ -26,7 +26,7 @@ resource "aws_codebuild_project" "app" {
     location        = "https://git-codecommit.${var.region}.amazonaws.com/v1/repos/${var.repo_name}"
     git_clone_depth = 1
   }
-  source_version = "refs/heads/master"
+  source_version = "refs/heads/develop"
 
   tags = {
     Environment = "develop"

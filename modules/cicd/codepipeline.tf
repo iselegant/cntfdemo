@@ -26,7 +26,7 @@ resource "aws_codepipeline" "app" {
       output_artifacts = [local.source_artifact]
       configuration = {
         RepositoryName = var.repo_name
-        BranchName     = "master"
+        BranchName     = "develop"
       }
     }
   }
