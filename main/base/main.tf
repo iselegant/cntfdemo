@@ -41,3 +41,10 @@ module "appbase" {
   security_group_ingress_id = module.base.security_group_ingress_id
   subnet_ingress            = module.base.subnet_ingress
 }
+
+module "cicdbase" {
+  source = "../../modules/cicdbase"
+
+  aws_account_id = var.aws_account_id
+  resource_id    = var.resource_id
+}

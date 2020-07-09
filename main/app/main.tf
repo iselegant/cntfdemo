@@ -52,5 +52,13 @@ module "app" {
 module "cicd" {
   source = "../../modules/cicd"
 
-  repo_name   = "${var.resource_id}-repo"
+  aws_account_id = var.aws_account_id
+  resource_id    = var.resource_id
+  region         = var.region
+
+  app_name          = var.demo_app_name
+  repo_name         = "${var.resource_id}-repo"
+  codebuild_name    = "${var.resource_id}-codebuild"
+
+  codebuild_role_arn    = data.terraform_remote_state.base.outputs.codebuild_role_arn
 }

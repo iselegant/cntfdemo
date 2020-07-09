@@ -41,3 +41,7 @@ output "ecs_codedeploy_role_arn" {
 output "sd_ns_common_id" {
   value = module.appbase.sd_ns_common_id
 }
+
+output "codebuild_role_arn" {
+  value = module.cicdbase.codebuild_role_arn
+}
