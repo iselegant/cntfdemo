@@ -46,6 +46,8 @@ $ git clone https://github.com/iselegant/cntfdemo
 
 $ cd cntfdemo
 
+$ for remote in `git branch -r`; do git branch --track ${remote#origin/} $remote; done
+
 $ git branch
   cnfs/chap-3_step-1
   cnfs/chap-3_step-2
@@ -281,12 +283,86 @@ $ terragrunt apply
 
 ## 4章に関する手順
 
+Step3同様、Step4においても、Terraform管理対象外の操作（例えば、Codecommitへのソースコードプッシュ、CodeBuild用設定ファイルであるbuildspec.ymlの作成など）は手動での実施が必要です。
+この点について、各Step毎に手順を記載していきます。
+
 ### Step4-1の実行
+
+1. アプリケーション関連AWSリソースを作成します(ここではCodeCommitが作成されます)。
+作業用Cloud9インスタンスにて以下を実施してください。
+
+``` bash
+# Terraformの実行
+$ git checkout cnfs/chap-4_step-1
+$ cd ~/terraform/cntfdemo/main/app/
+
+# template providerのインストールが必要であるため、apply前にinitを実行する
+$ terragrunt init
+$ terragrunt apply
+```
+
+2. 書籍内の「4.1.2 開発環境の設定」と「4.1.3 サンプルアプリケーションの登録」を実施してください。
 
 ### Step4-2の実行
 
+1. 共通系AWSリソースを作成します(ここではCodeBuild用のIAMロールが作成されます)。
+作業用Cloud9インスタンスにて以下を実施してください。
+
+``` bash
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/base/
+$ terragrunt apply
+```
+
+2. アプリケーション関連AWSリソースを作成します(ここではCodeBuildが作成されます)。
+
+``` bash
+# Terraformの実行
+$ git checkout cnfs/chap-4_step-2
+$ cd ~/terraform/cntfdemo/main/app/
+$ terragrunt apply
+```
+
+3. 書籍内の「4.2.3 全体のビルド定義の作成」を参考にbuildspec.yamlを作成するか、cntfapp/yaml/chap-4_step-2/buildspec.ymlをアプリケーションルート配下に配置してください。
+
+- TODO: buildspec.yamlを配置する
+
+4.Terraformにて作成されたCodeBuild定義 「cnapp-codebuild」を実行して正常に完了することを確認してください。
+
 ### Step4-3の実行
 
+Step4-3では特に作成が必要なリソースはありません。
+
 ### Step4-4の実行
+
+1. 共通系AWSリソースを作成します(ここではCodePipeline用のIAMロールが作成されます)。
+作業用Cloud9インスタンスにて以下を実施してください。
+
+``` bash
+# Terraformの実行
+$ cd ~/terraform/cntfdemo/main/base/
+$ terragrunt apply
+```
+
+2. アプリケーション関連AWSリソースを作成します(ここではCodePipelineが作成されます)。
+
+``` bash
+# Terraformの実行
+$ git checkout cnfs/chap-4_step-2
+$ cd ~/terraform/cntfdemo/main/app/
+$ terragrunt apply
+```
+
+3. 書籍内の「 4.4.2 パイプラインの構築の下準備」と「 4.4.4 パイプラインの修正」を参考に以下ファイルを作成してアプリケーションルート配下に配置してください。
+
+  - buildspec.yml
+  - appspec.yaml
+  - taskdef.json
+
+    もし作成内容がわからない場合は、cntfapp/yaml/chap-4_step-4/配下のファイルを参考にしていください。
+
+4. 「 4.5.2 アプリケーションの変更」を実施してください。その際、CodeCommitにプッシュする対象として、4.5.2内で修正したアプリケーションだけでなく、上記で作成したbuildspec.yml、appspec.yaml、taskdef.jsonも併せてプッシュしてください。
+
+5. CodePipelineが稼働し、正常終了することを確認してください。
 
 ## 環境の削除
