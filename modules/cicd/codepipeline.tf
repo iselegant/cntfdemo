@@ -7,10 +7,10 @@ locals {
 
 resource "aws_codepipeline" "app" {
   name     = var.codepipeline_name
-  role_arn = aws_iam_role.codepipeline.arn
+  role_arn = var.codepipeline_role_arn
 
   artifact_store {
-    location = aws_s3_bucket.artifact.bucket
+    location = var.s3_artifact_bucket
     type     = "S3"
   }
 

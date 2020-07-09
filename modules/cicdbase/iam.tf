@@ -58,10 +58,7 @@ data "aws_iam_policy_document" "codebuild_policy" {
   statement {
     sid    = "CloudWatch"
     effect = "Allow"
-    resources = [
-      "arn:aws:logs:${var.region}:${var.aws_account_id}:log-group:${var.codebuild_name}",
-      "arn:aws:logs:${var.region}:${var.aws_account_id}:log-group:${var.codebuild_name}:*"
-    ]
+    resources = ["*"]
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
@@ -72,14 +69,14 @@ data "aws_iam_policy_document" "codebuild_policy" {
   statement {
     sid       = "GetAuthorizationToken"
     effect    = "Allow"
-    actions   = ["ecr:GetAuthorizationToken"]
     resources = ["*"]
+    actions   = ["ecr:GetAuthorizationToken"]
   }
 
   statement {
     sid       = "ECR"
     effect    = "Allow"
-    resources = ["arn:aws:ecr:${var.region}:${var.aws_account_id}:repository/${var.app_name}"]
+    resources = ["*"]
     actions = [
       "ecr:BatchCheckLayerAvailability",
       "ecr:CompleteLayerUpload",
@@ -92,8 +89,7 @@ data "aws_iam_policy_document" "codebuild_policy" {
   statement {
     sid    = "CodeCommit"
     effect = "Allow"
-    resources = [
-    "arn:aws:codecommit:${var.region}:${var.aws_account_id}:${var.resource_id}-repo"]
+    resources = ["*"]
     actions = [
       "codecommit:GitPull"
     ]
@@ -102,9 +98,7 @@ data "aws_iam_policy_document" "codebuild_policy" {
   statement {
     sid    = "CodeBuild"
     effect = "Allow"
-    resources = [
-      "arn:aws:codebuild:${var.region}:${var.aws_account_id}:report-group/${var.codebuild_name}-*"
-    ]
+    resources = ["*"]
     actions = [
       "codebuild:CreateReportGroup",
       "codebuild:CreateReport",
@@ -149,8 +143,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   statement {
     sid    = "CodeCommit"
     effect = "Allow"
-    resources = [
-    "arn:aws:codecommit:${var.region}:${var.aws_account_id}:${var.repo_name}"]
+    resources = ["*"]
     actions = [
       "codecommit:CancelUploadArchive",
       "codecommit:GetBranch",
@@ -163,7 +156,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   statement {
     sid       = "CodeBuild"
     effect    = "Allow"
-    resources = ["arn:aws:codebuild:${var.region}:${var.aws_account_id}:project/${var.codebuild_name}"]
+    resources = ["*"]
     actions = [
       "codebuild:BatchGetBuilds",
       "codebuild:StartBuild"
@@ -212,4 +205,12 @@ data "aws_iam_policy_document" "codepipeline_policy" {
       "ecs:UpdateService"
     ]
   }
+}
+
+output "codebuild_role_arn" {
+  value = aws_iam_role.codebuild.arn
+}
+
+output "codepipeline_role_arn" {
+  value = aws_iam_role.codepipeline.arn
 }
