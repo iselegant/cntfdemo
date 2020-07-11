@@ -120,7 +120,6 @@ Terraform実行環境であるCloud9を作成します。
 |-|-|
 |Name|cnapp-playground|
 |Description|(入力なし)|
-|ソートキーの追加|チェックしない|
 
 4. [Step2 Configure settings] では、次のように各項目を入力・選択後、 [Next step] ボタンを押します。
 ネットワークVPC及びサブネットはデフォルトのものを選択してください（デフォルトVPCが存在しない場合、インターネットに接続可能なVPCとサブネットを選択してください）。
@@ -205,11 +204,12 @@ tfenvはTerraformのバージョン管理や切り替えが簡単に行えるオ
 
 ```bash
 # インストール対象のディレクトリを作成
+$ cd ..
 $ mkdir .tfenv
 
 # Githubリポジトリからtfenvをダウンロードし、所定の場所にインストール
 $ wget https://github.com/tfutils/tfenv/archive/v2.0.0.tar.gz
-$ tar zxvf ../v2.0.0.tar.gz
+$ tar zxvf v2.0.0.tar.gz
 $ mv tfenv-2.0.0/* .tfenv/
 
 # tfenv実行に必要なパスを通す
@@ -290,7 +290,7 @@ terragrunt version v0.23.31
 
 ## Terraform実行とAWSリソースの作成
 
-
+BOOK.mdを読み進めてAWSリソースを作成してください。
 
 ## リソースの削除
 

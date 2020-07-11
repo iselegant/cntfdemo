@@ -40,6 +40,8 @@ Amazon AuroraやAmazon Systems Managerパラメーターストアなどで扱う
 REDOME.mdで作成したCloud9上で必要なブランチを取得します。
 
 	``` bash
+	$ pwd
+    /home/ec2-user
 	$ mkdir terraform; ls -l; cd terraform
 
 	$ git clone https://github.com/iselegant/cntfdemo
@@ -95,7 +97,7 @@ REDOME.mdで作成したCloud9上で必要なブランチを取得します。
 作業用Cloud9インスタンスにて以下を実施してください。
 
 	``` bash
-	# 対象ステップのブランチ切り替え
+	# 対象ステップのブランチ切り替え(切り替え済みであれば不要)
 	$ git checkout cnfs/chap-3_step-1
 
 	# Terraformの実行
