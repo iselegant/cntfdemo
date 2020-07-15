@@ -52,6 +52,8 @@ resource "aws_rds_cluster" "main" {
       final_snapshot_identifier,
     ]
   }
+
+  depends_on = [aws_db_subnet_group.main]
 }
 
 resource "aws_rds_cluster_instance" "main" {
