@@ -20,10 +20,9 @@ cntfappではTerraformとTerragruntを利用していますが、これらのOSS
 
 ## OSS利用バージョン
 
-TODO: バージョン記載
-
-- Terraform:
-- Terragrunt:
+- Terraform: v0.12.28
+  - Terraform Provider AWS: 2.70.0
+- Terragrunt: v0.23.31
 
 ## 利用に際した前提事項
 
@@ -198,8 +197,6 @@ EC2にアタッチしたIAMロールの適用を優先させるためにAMTCを�
 
 ### tfenvのインストール
 
-- TODO: tfenvバージョンの最新化
-
 tfenvはTerraformのバージョン管理や切り替えが簡単に行えるオープンソースです。
 今回、Terraformのインストールはtfenvで実施することで容易にバージョン管理可能な構成方針とします。
 
@@ -209,11 +206,11 @@ $ mkdir .tfenv
 
 # Githubリポジトリからtfenvをダウンロードし、所定の場所にインストール
 $ wget https://github.com/tfutils/tfenv/archive/v2.0.0.tar.gz
-$ tar zxvf ../v2.0.0.tar.gz
+$ tar zxvf ./v2.0.0.tar.gz
 $ mv tfenv-2.0.0/* .tfenv/
 
 # tfenv実行に必要なパスを通す
-$ echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >> ~/.bash_profile
+$ echo 'export PATH="$HOME/environment/.tfenv/bin:$PATH"' >> ~/.bash_profile
 $ source ~/.bash_profile
 
 # バージョンの確認 (下記出力内容は2020年7月5時点の内容)
@@ -237,33 +234,28 @@ $ rm v2.0.0.tar.gz
 
 次にtfenv経由でTerraformをインストールします。
 
-- TODO: Terraformバージョンの最新化
-
 ```bash
 # v0.12.25のインストール
-$ tfenv install 0.12.25
-Installing Terraform v0.12.25
-Downloading release tarball from https://releases.hashicorp.com/terraform/0.12.25/terraform_0.12.25_linux_amd64.zip
-######################################################################################################################################################################################################################################################### 100.0%
-Downloading SHA hash file from https://releases.hashicorp.com/terraform/0.12.25/terraform_0.12.25_SHA256SUMS
+$ tfenv install 0.12.28
+Installing Terraform v0.12.28
+Downloading release tarball from https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+####################################################################################################################################################### 100.0%
+Downloading SHA hash file from https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_SHA256SUMS
 No keybase install found, skipping OpenPGP signature verification
-Archive:  tfenv_download.BGgMie/terraform_0.12.25_linux_amd64.zip
-  inflating: /home/ec2-user/.tfenv/versions/0.12.25/terraform  
-Installation of terraform v0.12.25 successful. To make this your default version, run 'tfenv use 0.12.25'
+Archive:  tfenv_download.bfeXAO/terraform_0.12.28_linux_amd64.zip
+  inflating: /home/ec2-user/environment/.tfenv/versions/0.12.28/terraform  
+Installation of terraform v0.12.28 successful. To make this your default version, run 'tfenv use 0.12.28'
 
 # インストールしたバージョンの有効化
-$ tfenv use 0.12.25
-Switching default version to v0.12.25
+$ tfenv use 0.12.28
+Switching default version to v0.12.28
 Switching completed
 $ tfenv list
-* 0.12.25 (set by /home/ec2-user/.tfenv/version)
+* 0.12.28 (set by /home/ec2-user/.tfenv/version)
 
 # terraformコマンドの実行確認
 $ terraform -v
-Terraform v0.12.25
-
-Your version of Terraform is out of date! The latest version
-is 0.12.28. You can update by downloading from https://www.terraform.io/downloads.html
+Terraform v0.12.28
 ```
 
 ### Terragruntのインストール
@@ -290,7 +282,33 @@ terragrunt version v0.23.31
 
 ## Terraform実行とAWSリソースの作成
 
+リソースの作成は共通系リソースとアプリケーション関連AWSリソースに分けて作成を行います。
 
+### 共通系AWSリソースを作成
+
+``` bash
+# Terraformの実行
+$ git checkout master
+$ cd ~/environment/terraform/cntfdemo/main/base/
+$ terragrunt apply
+```
+
+### アプリケーション系AWSリソース
+
+``` bash
+# Terraformの実行
+$ cd ~/environment/terraform/cntfdemo/main/app/
+$ terragrunt apply
+```
+
+これらコマンドにより、各AWSリソースが作成されますが、以下の点に関しては手動でフォローが必要です。
+そのため、このままではアプリケーションの稼働やCI/CDの実行までは行うことができません。
+
+- Dockerイメージの作成とECRへのプッシュ
+- Aurora内のテーブル作成とサンプルデータ投入
+- CI/CDに必要な設定ファイル(buildspec.yml, appspec.yamlなど)
+
+アプリケーション稼働まで実施する場合は、「**AWSで学ぶクラウドネイティブ実践入門**」の内容とBOOK.mdの内容を参考に実施を進めてください。
 
 ## リソースの削除
 
@@ -298,7 +316,7 @@ terragrunt version v0.23.31
 
 ### Terraformリソースの削除
 
-- TODO: 一部削除保護の解除が必要な旨を追記
+作成された一部AWSリソースに関しては、削除保護が有効になっていますが、Terraformによる削除前にこれらリソースの削除保護を無効化しておく必要があります。
 
 #### ALBの削除保護を解除
 
@@ -329,31 +347,24 @@ terragrunt version v0.23.31
 
 #### Cloud9の削除
 
-Cloud9環境 [cnapp-cloud9] について、以下手順を参考に削除してください。
+Cloud9環境 [cnapp-management-env] について、以下手順を参考に削除してください。
 
 [Deleting an Environment in AWS Cloud9](https://docs.aws.amazon.com/ja_jp/cloud9/latest/user-guide/delete-environment.html)
 
 ※TerraformでCloud9環境が稼働するサブネットが削除される関係上、先に削除しておく必要があります。
+また、Terraform操作を行っているCloud9 [cnapp-playground] を誤って消さないようにご注意ください。
 
 #### destroyによるTerraform作成リソースを削除
 
-1. アプリケーション関連AWSリソースを作成します(ここではCodePipelineが作成されます)。
-作業用Cloud9インスタンスにて以下を実施してください。
+以下を実施してください。
 
 	``` bash
-	# Terraformの実行
-	$ git checkout masterm
-	$ cd ~/terraform/cntfdemo/main/app/
-	$ terragrunt apply
-	# すべてのAWSリソース削除には1分30秒ほど時間を要する(筆者実績では1分26秒)
-	```
+	$ cd ~/environment/terraform/cntfdemo/main/app/
+	$ terragrunt destroy
 
-2. 共通系AWSリソースを作成します。
-
-	``` bash
-	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/base/
-	$ terragrunt apply
+	$ cd ~/environment/terraform/cntfdemo/main/base/
+	$ terragrunt destroy
+	# 全リソース削除には分弱ほど時間を要する(筆者実績では17分4秒要した)
 	```
 
 ### 手動で作成したAWSリソースの削除
