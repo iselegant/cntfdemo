@@ -1,0 +1,42 @@
+{
+  "executionRoleArn": "arn:aws:iam::513132288478:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "cnappdemo",
+      "image": "<IMAGE1_NAME>",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "cpu": 256,
+      "memoryReservation": 512,
+      "secrets": [
+        {
+          "valueFrom": "cnapp-param-db-host",
+          "name": "CNAPP_DB_HOST"
+        },
+        {
+          "valueFrom": "cnapp-param-db-name",
+          "name": "CNAPP_DB_NAME"
+        },
+        {
+          "valueFrom": "cnapp-param-db-password",
+          "name": "CNAPP_DB_PASSWORD"
+        },
+        {
+          "valueFrom": "cnapp-param-db-username",
+          "name": "CNAPP_DB_USERNAME"
+        }
+      ]
+    }
+  ],
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "512",
+  "memory": "1024",
+  "family": "cnapp-ecs-task"
+}
