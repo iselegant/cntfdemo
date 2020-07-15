@@ -23,6 +23,7 @@ resource "aws_rds_cluster" "main" {
   engine_version      = local.aurora_engine_version
   engine_mode         = "provisioned"
   database_name       = var.resource_id
+  skip_final_snapshot = true
   deletion_protection = true
 
   availability_zones = [
