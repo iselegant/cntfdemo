@@ -56,7 +56,6 @@ REDOME.mdで作成したCloud9上で必要なブランチを取得します。
 	cnfs/chap-3_step-5
 	cnfs/chap-4_step-1
 	cnfs/chap-4_step-2
-	cnfs/chap-4_step-3
 	cnfs/chap-4_step-4
 	* master
 
@@ -84,7 +83,7 @@ REDOME.mdで作成したCloud9上で必要なブランチを取得します。
 
 以下のように各章の各Stepと本リポジトリのブランチについて、1対1で紐付いています。
 
-<img src="./images/branches.jpg" width="512" alt="ブランチと書籍内で作成するAWSリソースの対応について">
+<img src="./images/branches.png" width="512" alt="ブランチと書籍内で作成するAWSリソースの対応について">
 
 そのため、各Step毎にブランチ切り替えながら`terragrunt apply`を実行していくのが基本的な流れです。
 以下に各章各Step毎の手順を記載します。
@@ -99,7 +98,7 @@ REDOME.mdで作成したCloud9上で必要なブランチを取得します。
 	$ git checkout cnfs/chap-3_step-1
 
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/base/
+	$ cd ~/environment/terraform/cntfdemo/main/base/
 	$ terragrunt apply
 	[terragrunt] [/home/ec2-user/terraform/cntfdemo/main/base] 2020/07/05 07:43:37 Running command: terraform --version
 	[terragrunt] 2020/07/05 07:43:37 Terraform version: 0.12.25
@@ -144,7 +143,7 @@ REDOME.mdで作成したCloud9上で必要なブランチを取得します。
 	$ git checkout cnfs/chap-3_step-2
 
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/base/
+	$ cd ~/environment/terraform/cntfdemo/main/base/
 	$ terragrunt apply
 
 	# Step3-1同様に、「yes」と入力し、「Apply complete!」の表示を確認
@@ -155,23 +154,23 @@ REDOME.mdで作成したCloud9上で必要なブランチを取得します。
 作業用Cloud9インスタンスにて以下を実施してください。
 
 	``` bash
-	# アプリケーション系AWSリソースの作成
-
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/app/
+	$ cd ~/environment/terraform/cntfdemo/main/app/
 	$ terragrunt apply
 	```
 
 ### Step3-3の実行
 
 Step3-3ではCloud9の作成が必要ですが、Terraformでの作成は行いません。
-なぜかというと、Cloud9のIDEを開くことができるのはCloud9を作成したIAMユーザのみとなります。
-そのため、後続でCloud9を開くためにIAMユーザーのAWSアクセスキーを払い出して環境変数としてセットし、その情報を基にTerraformを実行するという流れが少々複雑となるからです。
+理由として、Cloud9のIDEを開くことができるのはCloud9を作成したIAMユーザに限定される制約があるためです。
+もし無理やりTerraformで作成しようとなると、後続でCloud9を開くためにIAMユーザーのAWSアクセスキーを払い出して環境変数としてセットし、その情報を基にTerraformを実行するという流れが少々複雑となるからです。
 
 また、TerraformにてCloud9リソース自体を作成することは可能ですが、Cloud9から間接的に作成されるEC2のインスタンス情報について、Terraformリソースをベースに参照することが出来ません。
 そのため、ハンズオン内で行うEIPやインスタンスプロファイルの関連付けに対してどうしても手動フォローが必要となります。
 
 ここでは構築をシンプルにするため、Cloud9及びこれに関連する紐付け作業においては手動で行います。
+
+なお、REDOME.md側でこれらTerraformを実行するための環境もCloud9で作成していますが、これとは別のCloud9となるのでご注意ください。
 
 1. 共通系AWSリソースを作成します。
 作業用Cloud9インスタンスにて以下を実施してください。
@@ -181,7 +180,7 @@ Step3-3ではCloud9の作成が必要ですが、Terraformでの作成は行い�
 	$ git checkout cnfs/chap-3_step-3
 
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/base/
+	$ cd ~/environment/terraform/cntfdemo/main/base/
 	$ terragrunt apply
 
 	# Step3-1同様に、「yes」と入力し、「Apply complete!」の表示を確認
@@ -193,7 +192,7 @@ Step3-3ではCloud9の作成が必要ですが、Terraformでの作成は行い�
 
 	``` bash
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/app/
+	$ cd ~/environment/terraform/cntfdemo/main/app/
 	$ terragrunt apply
 	```
 
@@ -216,7 +215,7 @@ Step3-4ではほぼTerraformのみで必要なAWSリソースを作成するこ�
 	$ git checkout cnfs/chap-3_step-4
 
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/base/
+	$ cd ~/environment/terraform/cntfdemo/main/base/
 	$ terragrunt apply
 
 	# 「yes」と入力し、「Apply complete!」の表示を確認
@@ -228,7 +227,7 @@ Step3-4ではほぼTerraformのみで必要なAWSリソースを作成するこ�
 
 	``` bash
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/app/
+	$ cd ~/environment/terraform/cntfdemo/main/app/
 
 	# template providerのインストールが必要であるため、apply前にinitを実行する
 	$ terragrunt init
@@ -241,10 +240,13 @@ Step3-4ではほぼTerraformのみで必要なAWSリソースを作成するこ�
 
 Step3-5では、Terraformで作成された認証情報関連の値を手動で変更する必要があります。
 理由として、Terraformのソースコード上で実際の値を記述してしまうと、漏洩してしまうリスクが潜在するためです。
-本番運用を意識した対応では、ソースコード上の値はダミー値としておくことが望ましいです。
-そのため、Terraformにてリソース作成後に明示的に変更してください(認証情報に関するTerraformリソースはignore_changeにより差分を無視するように記述しています。そのため、手動変更後に terragrunt applyを実行しても差分として検出されないように配慮してコーディングしています)。
+本番運用を意識した対応では、ソースコード上の値はダミー値としておくことが望ましいでしょう。
+そのため、Terraformにてリソース作成後に明示的に変更してください
+(認証情報に関するTerraformリソースはignore_changeにより差分を無視するように記述しています。
+そのため、手動変更後に terragrunt applyを実行しても差分として検出されないように配慮してコーディングしています)。
 
-また、本Stepで作成するAmazon Aurora作成はかなり時間を要します(20分弱)。作業時はこの点についてもご留意ください。
+また、本Stepで作成するAmazon Aurora作成はかなり時間を要します(20分弱)。
+作業時はこの点についてもご注意ください。
 
 1. 共通系AWSリソースを作成します。
 作業用Cloud9インスタンスにて以下を実施してください。
@@ -254,7 +256,7 @@ Step3-5では、Terraformで作成された認証情報関連の値を手動で�
 	$ git checkout cnfs/chap-3_step-5
 
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/base/
+	$ cd ~/environment/terraform/cntfdemo/main/base/
 	$ terragrunt apply
 
 	# 「yes」と入力し、「Apply complete!」の表示を確認
@@ -264,7 +266,7 @@ Step3-5では、Terraformで作成された認証情報関連の値を手動で�
 2. Auroraの接続パスワードを変更します。
 
 	- 書籍内の「3.6.3 データベース接続に必要な準備 - テーブルとデータの作成」内手順の1〜6までを実施してください。
-	その時に入力するDBパスワードは「password」となります。
+	ちなみに初期のDBパスワードは「password」となります。
     - 以下コマンドにより、adminのパスワードを変更します。
 
 		```SQL
@@ -286,7 +288,7 @@ Step3-5では、Terraformで作成された認証情報関連の値を手動で�
 ## 4章に関する手順
 
 Step3同様、Step4においても、Terraform管理対象外の操作（例えば、Codecommitへのソースコードプッシュ、CodeBuild用設定ファイルであるbuildspec.ymlの作成など）は手動での実施が必要です。
-この点について、各Step毎に手順を記載していきます。
+この点について、各Step毎に手順を実施していきます。
 
 ### Step4-1の実行
 
@@ -296,7 +298,7 @@ Step3同様、Step4においても、Terraform管理対象外の操作（例え�
 	``` bash
 	# Terraformの実行
 	$ git checkout cnfs/chap-4_step-1
-	$ cd ~/terraform/cntfdemo/main/app/
+	$ cd ~/environment/terraform/cntfdemo/main/app/
 
 	# template providerのインストールが必要であるため、apply前にinitを実行する
 	$ terragrunt init
@@ -313,7 +315,7 @@ Step3同様、Step4においても、Terraform管理対象外の操作（例え�
 	``` bash
 	# Terraformの実行
 	$ git checkout cnfs/chap-4_step-2
-	$ cd ~/terraform/cntfdemo/main/base/
+	$ cd ~/environment/terraform/cntfdemo/main/base/
 	$ terragrunt apply
 	```
 
@@ -321,7 +323,7 @@ Step3同様、Step4においても、Terraform管理対象外の操作（例え�
 
 	``` bash
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/app/
+	$ cd ~/environment/terraform/cntfdemo/main/app/
 	$ terragrunt apply
 	```
 
@@ -341,7 +343,7 @@ Step4-3では特に作成が必要なリソースはありません。
 	``` bash
 	# Terraformの実行
 	$ git checkout cnfs/chap-4_step-4
-	$ cd ~/terraform/cntfdemo/main/base/
+	$ cd ~/environment/terraform/cntfdemo/main/base/
 	$ terragrunt apply
 	```
 
@@ -349,11 +351,11 @@ Step4-3では特に作成が必要なリソースはありません。
 
 	``` bash
 	# Terraformの実行
-	$ cd ~/terraform/cntfdemo/main/app/
+	$ cd ~/environment/terraform/cntfdemo/main/app/
 	$ terragrunt apply
 	```
 
-3. 書籍内の「 4.4.2 パイプラインの構築の下準備」と「 4.4.4 パイプラインの修正」を参考に以下ファイルを作成してアプリケーションルート配下に配置してください。
+3. 書籍内の「 4.4.2 パイプラインの構築の下準備」と「 4.4.4 パイプラインの修正」を参考に以下ファイルを作成してアプリケーションルート配下に配置してください。
 
 	- buildspec.yml
 	- appspec.yaml
@@ -361,7 +363,9 @@ Step4-3では特に作成が必要なリソースはありません。
 
     もし作成内容がわからない場合は、cntfapp/sample/cnfs/chap-4_step-4/配下のファイルを参考にしていください。
 
-4. 「 4.5.2 アプリケーションの変更」を実施してください。その際、CodeCommitにプッシュする対象として、4.5.2内で修正したアプリケーションだけでなく、上記で作成したbuildspec.yml、appspec.yaml、taskdef.jsonも併せてプッシュしてください。
+4. 「 4.5.2 アプリケーションの変更」を実施してください。
+その際、CodeCommitにプッシュする対象として、4.5.2内で修正したアプリケーションだけでなく、上記で作成したbuildspec.yml、appspec.yaml、taskdef.jsonも併せてプッシュしてください。また、後続のCodePipelineが起動するためのトリガーブランチはdevelopです。
+プッシュするブランチはmasterではなく、developである点についてもご注意ください。
 
 5. CodePipelineが稼働し、正常終了することを確認してください。
 
