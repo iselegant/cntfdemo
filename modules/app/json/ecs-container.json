@@ -20,6 +20,24 @@
         "protocol": "tcp",
         "containerPort": 80
       }
+    ],
+    "secrets": [
+      {
+        "name": "CNAPP_DB_HOST",
+        "valueFrom": "${resource_id}-param-db-host"
+      },
+      {
+        "name": "CNAPP_DB_NAME",
+        "valueFrom": "${resource_id}-param-db-name"
+      },
+      {
+        "name": "CNAPP_DB_PASSWORD",
+        "valueFrom": "${resource_id}-param-db-password"
+      },
+      {
+        "name": "CNAPP_DB_USERNAME",
+        "valueFrom": "${resource_id}-param-db-username"
+      }
     ]
   }
 ]
