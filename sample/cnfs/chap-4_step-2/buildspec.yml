@@ -1,0 +1,24 @@
+version: 0.2
+
+env:
+    variables:
+        AWS_REGION_NAME: ap-northeast-1
+        ECR_REPOSITORY_NAME: cnappdemo
+
+phases:
+    install:
+        runtime-versions:
+            golang: 1.13
+    pre_build:
+        commands:
+            - $(aws ecr get-login --region ${AWS_REGION_NAME} --no-include-email)
+            - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+            - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION_NAME}.amazonaws.com/${ECR_REPOSITORY_NAME}
+            - IMAGE_TAG=$(git rev-parse --short HEAD)
+    build:
+        commands:
+            - docker build -t ${REPOSITORY_URI}:latest .
+            - docker tag ${REPOSITORY_URI}:latest ${REPOSITORY_URI}:${IMAGE_TAG}
+    post_build:
+        commands:
+            - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
