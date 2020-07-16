@@ -1,11 +1,11 @@
 terraform {
-  required_version = "v0.12.25"
+  required_version = "v0.12.28"
 
   backend "s3" {}
 }
 
 provider "aws" {
-  version = "2.63.0"
+  version = "2.70.0"
   region  = var.region
 }
 
@@ -40,4 +40,11 @@ module "appbase" {
   vpc_main_id               = module.base.vpc_main_id
   security_group_ingress_id = module.base.security_group_ingress_id
   subnet_ingress            = module.base.subnet_ingress
+}
+
+module "cicdbase" {
+  source = "../../modules/cicdbase"
+
+  aws_account_id = var.aws_account_id
+  resource_id    = var.resource_id
 }

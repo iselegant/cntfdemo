@@ -75,6 +75,7 @@ data "template_file" "common" {
 
   vars = {
     region         = var.region
+    resource_id    = var.resource_id
     container_name = var.container_name
     ecr_name       = aws_ecr_repository.app.repository_url
     image_revision = "v1"

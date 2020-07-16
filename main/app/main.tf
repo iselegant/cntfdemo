@@ -1,11 +1,11 @@
 terraform {
-  required_version = "v0.12.25"
+  required_version = "v0.12.28"
 
   backend "s3" {}
 }
 
 provider "aws" {
-  version = "2.63.0"
+  version = "2.70.0"
   region  = var.region
 }
 
@@ -49,3 +49,19 @@ module "app" {
   sd_ns_common_id              = data.terraform_remote_state.base.outputs.sd_ns_common_id
 }
 
+module "cicd" {
+  source = "../../modules/cicd"
+
+  aws_account_id = var.aws_account_id
+  resource_id    = var.resource_id
+  region         = var.region
+
+  app_name          = var.demo_app_name
+  repo_name         = "${var.resource_id}-repo"
+  codebuild_name    = "${var.resource_id}-codebuild"
+  codepipeline_name = "${var.resource_id}-codepipeline"
+
+  s3_artifact_bucket    = data.terraform_remote_state.base.outputs.s3_artifact_bucket
+  codebuild_role_arn    = data.terraform_remote_state.base.outputs.codebuild_role_arn
+  codepipeline_role_arn = data.terraform_remote_state.base.outputs.codepipeline_role_arn
+}
