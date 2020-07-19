@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Id": "SSEAndSSLPolicy",
+  "Statement": [
+    {
+      "Sid": "DenyUnEncryptedObjectUploads",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::[cnapp-artifact-xxxxxxx]/*",
+      "Condition": {
+        "StringNotEquals": {
+          "s3:x-amz-server-side-encryption": "aws:kms"
+        }
+      }
+    },
+    {
+      "Sid": "DenyInsecureConnections",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": "arn:aws:s3:::[cnapp-artifact-xxxxxxx]/*",
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "CrossAccountS3GetPutPolicy",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::[dev_account_id]:root"
+      },
+      "Action": [
+        "s3:Get*",
+        "s3:Put*"
+      ],
+      "Resource": "arn:aws:s3:::[cnapp-artifact-xxxxxxx]/*"
+    },
+    {
+      "Sid": "CrossAccountS3ListPolicy",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::[dev_account_id]:root"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::[cnapp-artifact-xxxxxxx]"
+    }
+  ]
+}
