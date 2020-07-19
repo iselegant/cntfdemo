@@ -1,14 +1,14 @@
-# cntfapp
+# cntfdemo
 
-## cntfappで実現できること
+## cntfdemoで実現できること
 
-cntfappはクラウドネイティブなAWSサービス構成を構築できるTerraformソースコードです。
+cntfdemoはクラウドネイティブなAWSサービス構成を構築できるTerraformソースコードです。
 Amazon ECSやAWS Fargate、Amazon Codeシリーズを中心としたコンテナ・CI/CDの作成を行うことができます。
-cntfappのTerraformを実行することで、以下のような環境を構築することが可能となっています。
+cntfdemoのTerraformを実行することで、以下のような環境を構築することが可能となっています。
 
-<img src="./images/architecture.png" alt="cntfappで作成可能なAWS構成">
+<img src="./images/architecture.png" alt="cntfdemoで作成可能なAWS構成">
 
-cntfappではTerraformとTerragruntを利用していますが、これらのOSSの説明は割愛します。
+cntfdemoではTerraformとTerragruntを利用していますが、これらのOSSの説明は割愛します。
 内容を確認したい方は以下をご参照ください。
 
 - [Terraform Website](https://www.terraform.io/)
@@ -26,7 +26,7 @@ cntfappではTerraformとTerragruntを利用していますが、これらのOSS
 
 ## 利用に際した前提事項
 
-以下のようにcntfappは**AWS Cloud9上でのTerraform/Terragrunt実行**を前提に作成しています。
+以下のようにcntfdemoは**AWS Cloud9上でのTerraform/Terragrunt実行**を前提に作成しています。
 
 <img src="./images/terraform-env.png" width="512" alt="Terraform利用環境">
 
@@ -202,6 +202,7 @@ tfenvはTerraformのバージョン管理や切り替えが簡単に行えるオ
 
 ```bash
 # インストール対象のディレクトリを作成
+$ cd ~/environment
 $ mkdir .tfenv
 
 # Githubリポジトリからtfenvをダウンロードし、所定の場所にインストール
@@ -235,7 +236,6 @@ $ rm v2.0.0.tar.gz
 次にtfenv経由でTerraformをインストールします。
 
 ```bash
-# v0.12.25のインストール
 $ tfenv install 0.12.28
 Installing Terraform v0.12.28
 Downloading release tarball from https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
@@ -266,6 +266,7 @@ Terragruntを利用することで、コードの重複を減らす(DRY; Don't R
 
 ```bash
 # Terragruntのダウンロード
+$ cd ~/environment
 $ wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.23.31/terragrunt_linux_amd64
 
 # ダウンロードしたバイナリファイルの配置
@@ -375,17 +376,29 @@ Terraform環境用に作成した以下リソースを削除してください�
 - ロック管理用DynamoDBテーブル [cnapp-terraform-state-lock]
 - Terraform実行用Cloud9 [cnapp-playground]
 
+## Fargate v1.4.0に関する補足事項
+
+2020年7月17日時点において、ECSコンソールからFargate のプラットフォームバージョンとして1.4.0を指定したとしてもCodeDeployによるデプロイの場合、1.3.0でタスクが起動されてしまう事象を確認しています（AWSサポートからも同様の回答あり）。
+
+appspec.yamlでPlatformVersionとして1.4.0を指定した後、CodeDeployコンソールから対象サービスに対してデプロイを実施することで回避可能との案内をいただいています。
+
+- [Amazon ECS コンピューティングプラットフォームを選択します。 のデプロイの作成 (コンソール) - AWS CodeDeploy](https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/deployments-create-console-ecs.html)
+
+- [AppSpec File 例 - AWS CodeDeploy](https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/reference-appspec-file-example.html#appspec-file-example-ecs)
+
+いずれは解消されるか事象かと考えていますが、念の為ご留意ください。
+
 ## 料金に関する補足
 
-- TODO: 1枚もので料金がわかる図を作成
+- 準備中
 
 ## 免責事項
 
-- cntfappは利用者ご自身の判断と責任において行われるものとします。
+- cntfdemoは利用者ご自身の判断と責任において行われるものとします。
 
 - 筆者が作成した文書・画像・ソフトウェア・リンクその他各種情報等については、慎重に作成、管理し、正確性を保つようには努めていますが、万一記載情報が事実と異なる場合は、Issueを作成していただけると幸いです。
 
-- cntfappの内容の全部または一部を事前の告知なしに変更する場合があります。
+- cntfdemoの内容の全部または一部を事前の告知なしに変更する場合があります。
 
-- cntfapp上から入手された情報により発生したあらゆる損害に関して一切の責任を負いません。
+- cntfdemo上から入手された情報により発生したあらゆる損害に関して一切の責任を負いません。
 ここに掲載する情報およびリンクが設定されている他のサイトから取得された各種情報の利用によって生じたあらゆる損害に関しても一切の責任を負いません。
