@@ -1,5 +1,5 @@
 {
-  "executionRoleArn": "arn:aws:iam::513132288478:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::[dev_account_id]:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
       "name": "cnappdemo",
