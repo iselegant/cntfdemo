@@ -1,0 +1,57 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION_NAME: ap-northeast-1
+    ECR_REPOSITORY_NAME: cnappdemo
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.13
+  pre_build:
+    commands:
+      - echo ----- pre build phase -----
+      - IMAGE_TAG=$(echo ${CODEBUILD_RESOLVED_SOURCE_VERSION} | cut -c 1-7)
+      - echo IMAGE_TAG=${IMAGE_TAG}
+      - |
+        if [ ${AWS_ENV} = "staging" ]; then
+          PULL_ECR_REPO_URI=${AWS_ACCOUNT_ID_ECR_SRC}.dkr.ecr.${AWS_REGION_NAME}.amazonaws.com/${ECR_REPOSITORY_NAME}
+        else
+          PULL_ECR_REPO_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION_NAME}.amazonaws.com/${ECR_REPOSITORY_NAME}
+        fi
+      - echo PULL_ECR_REPO_URI=${PULL_ECR_REPO_URI}
+      - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+      - PUSH_ECR_REPO_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION_NAME}.amazonaws.com/${ECR_REPOSITORY_NAME}
+      - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION_NAME}.amazonaws.com/${ECR_REPOSITORY_NAME}
+
+  build:
+    commands:
+      - echo ---- build phase -----
+      - |
+        if [ ${AWS_ENV} = "staging" ]; then
+              echo Log in to Amazon ECR in ${AWS_ACCOUNT_ID_ECR_SRC}
+              $(aws ecr get-login --registry-ids ${AWS_ACCOUNT_ID_ECR_SRC} --region ${AWS_REGION_NAME} --no-include-email)
+              docker pull ${PULL_ECR_REPO_URI}:${IMAGE_TAG}
+              docker tag  ${PULL_ECR_REPO_URI}:${IMAGE_TAG} ${PUSH_ECR_REPO_URI}:${IMAGE_TAG}
+              echo Completed ${ECR_REPOSITORY_NAME} Docker pull/push on `date`
+        else
+              echo Docker Build ${ECR_REPOSITORY_NAME} started on `date`
+              docker build -t ${REPOSITORY_URI}:latest .
+              docker tag ${REPOSITORY_URI}:latest ${PUSH_ECR_REPO_URI}:${IMAGE_TAG}
+              echo Completed the ${ECR_REPOSITORY_NAME} Docker image build on `date`.
+        fi
+  post_build:
+    commands:
+      - echo ----- post build phase -----
+      - echo Log in to Amazon ECR in ${AWS_ACCOUNT_ID} env.
+      - $(aws ecr get-login --region ${AWS_REGION_NAME} --registry-ids ${AWS_ACCOUNT_ID} --no-include-email)
+      - echo Docker Image ${ECR_REPOSITORY_NAME} pushing to ECR on `date`
+      - docker push ${PUSH_ECR_REPO_URI}:${IMAGE_TAG}
+      - printf '{"name":"%s","ImageURI":"%s"}' $ECR_REPOSITORY_NAME $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
+
+artifacts:
+  files:
+    - imageDetail.json
+    - taskdef.json
+    - appspec.yaml
