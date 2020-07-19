@@ -325,6 +325,8 @@ Step3同様、Step4においても、Terraform管理対象外の操作（例え�
 	``` bash
 	# Terraformの実行
 	$ cd ~/environment/terraform/cntfdemo/main/app/
+	# cicd moduleが追加されているのでapply前にinitを実行する
+	$ terragrunt init
 	$ terragrunt apply
 	```
 
