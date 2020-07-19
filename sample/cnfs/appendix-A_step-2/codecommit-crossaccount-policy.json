@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "UploadArtifactPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": [
+        "arn:aws:s3:::[cnapp-artifact-xxxxxxx]/*"
+      ]
+    },
+    {
+      "Sid": "KMSAccessPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "kms:GenerateDataKey*",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:Decrypt"
+      ],
+      "Resource": [
+        "[KMSのARN]"
+      ]
+    },
+    {
+      "Sid": "CodeCommitAccessPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:GetBranch",
+        "codecommit:GetCommit",
+        "codecommit:UploadArchive",
+        "codecommit:GetUploadArchiveStatus",
+        "codecommit:CancelUploadArchive"
+      ],
+      "Resource": [
+        "arn:aws:codecommit:ap-northeast-1:[dev_account_id]:cnapp-repo"
+      ]
+    }
+  ]
+}
