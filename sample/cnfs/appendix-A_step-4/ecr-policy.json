@@ -1,0 +1,22 @@
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "StagingECRPull",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::[staging_account_id]:root"
+      },
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:DescribeImages",
+        "ecr:DescribeRepositories",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:GetRepositoryPolicy",
+        "ecr:ListImages"
+      ]
+    }
+  ]
+}

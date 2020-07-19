@@ -1,0 +1,89 @@
+{
+  "pipeline": {
+    "name": "cnapp-codepipeline-staging",
+    "roleArn": "arn:aws:iam::[staging_account_id]:role/cnapp-codepipeline-staging-role",
+    "artifactStore": {
+      "type": "S3",
+      "location": "[cnapp-artifact-xxxxxxx]",
+      "encryptionKey": {
+        "id": "<KMSのARN>",
+        "type": "KMS"
+      }
+    },
+    "stages": [
+      {
+        "name": "Source",
+        "actions": [
+          {
+            "name": "Source",
+            "actionTypeId": {
+              "category": "Source",
+              "owner": "AWS",
+              "provider": "CodeCommit",
+              "version": "1"
+            },
+            "runOrder": 1,
+            "configuration": {
+              "RepositoryName": "cnapp-repo",
+              "BranchName": "develop"
+            },
+            "outputArtifacts": [
+              {
+                "name": "SourceCode"
+              }
+            ],
+            "roleArn": "arn:aws:iam::[dev_account_id]:role/cnapp-codecommit-crossaccount-role"
+          }
+        ]
+      },
+      {
+        "name": "BuildApprovalStage",
+        "actions": [
+          {
+            "name": "BuildApprovalAction",
+            "actionTypeId": {
+              "category": "Approval",
+              "owner": "AWS",
+              "version": "1",
+              "provider": "Manual"
+            },
+            "configuration": {
+              "NotificationArn": "arn:aws:sns:ap-northeast-1:[staging_account_id]:cnapp-sns",
+              "CustomData": "ステージング環境へのビルド承認依頼です。"
+            },
+            "runOrder": 1
+          }
+        ]
+      },
+      {
+        "name": "Build",
+        "actions": [
+          {
+            "name": "Build",
+            "actionTypeId": {
+              "category": "Build",
+              "owner": "AWS",
+              "provider": "CodeBuild",
+              "version": "1"
+            },
+            "runOrder": 1,
+            "configuration": {
+              "ProjectName": "cnapp-codebuild-staging"
+            },
+            "inputArtifacts": [
+              {
+                "name": "SourceCode"
+              }
+            ],
+            "outputArtifacts": [
+              {
+                "name": "ImageDefinitions"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "version": 1
+  }
+}
