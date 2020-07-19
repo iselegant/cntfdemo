@@ -376,7 +376,9 @@ Terraform環境用に作成した以下リソースを削除してください�
 - ロック管理用DynamoDBテーブル [cnapp-terraform-state-lock]
 - Terraform実行用Cloud9 [cnapp-playground]
 
-## Fargate v1.4.0に関する補足事項
+## 補足事項
+
+### Fargate v1.4.0利用時の注意点
 
 2020年7月17日時点において、ECSコンソールからFargate のプラットフォームバージョンとして1.4.0を指定したとしてもCodeDeployによるデプロイの場合、1.3.0でタスクが起動されてしまう事象を確認しています（AWSサポートからも同様の回答あり）。
 
@@ -388,7 +390,13 @@ appspec.yamlでPlatformVersionとして1.4.0を指定した後、CodeDeployコ�
 
 いずれは解消されるか事象かと考えていますが、念の為ご留意ください。
 
-## 料金に関する補足
+### Terraform WAFリソースについて
+
+開発時点では,Terraform AWS providerのWAFv2対応がされていなかったため、現時点のcntfdemoソースコードでは、Classic WAFによる提供となっておりますのでご留意ください。
+
+※その後、WAFv2が実装されたため、どこか都合の良いタイミングにてバージョンアップを予定しています。
+
+### 料金に関して
 
 - 準備中
 
