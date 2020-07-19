@@ -1,0 +1,31 @@
+{
+  "name": "cnapp-codebuild-staging",
+  "description": "For cross account codepipeline",
+  "source": {
+    "type": "CODEPIPELINE",
+    "buildspec": "buildspec.yml"
+  },
+  "artifacts": {
+    "type": "CODEPIPELINE"
+  },
+  "environment": {
+    "type": "LINUX_CONTAINER",
+    "image": "aws/codebuild/standard:2.0",
+    "computeType": "BUILD_GENERAL1_LARGE",
+    "privilegedMode": true,
+    "environmentVariables": [
+      {
+        "name": "AWS_ENV",
+        "value": "staging",
+        "type": "PLAINTEXT"
+      },
+      {
+        "name": "AWS_ACCOUNT_ID_ECR_SRC",
+        "value": "[dev_account_id]",
+        "type": "PLAINTEXT"
+      }
+    ]
+  },
+  "serviceRole": "arn:aws:iam::[staging_account_id]:role/cnapp-codebuild-staging-role",
+  "encryptionKey": "<KMSのARN>"
+}

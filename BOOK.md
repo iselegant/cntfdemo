@@ -306,7 +306,7 @@ Step3同様、Step4においても、Terraform管理対象外の操作（例え�
 	$ terragrunt apply
 	```
 
-2. 書籍内の「4.1.2 開発環境の設定」と「4.1.3 サンプルアプリケーションの登録」を実施してください。
+2. 書籍内の「4.1.2 開発環境の設定」、「4.1.3 サンプルアプリケーションの登録」「4.1.4 ブランチの切り替え」を実施してください。「4.1.2 開発環境の設定」のCloud9作成箇所はスキップして、[cnapp-dev]Cloud9インスタンスを今回のTerraform実行環境である[cnapp-playground]に読み替えていただいても問題ありません。
 
 ### Step4-2の実行
 
@@ -317,6 +317,8 @@ Step3同様、Step4においても、Terraform管理対象外の操作（例え�
 	# Terraformの実行
 	$ git checkout cnfs/chap-4_step-2
 	$ cd ~/environment/terraform/cntfdemo/main/base/
+	# cicd moduleが追加されているのでapply前にinitを実行する
+	$ terragrunt init
 	$ terragrunt apply
 	```
 
@@ -362,7 +364,7 @@ Step4-3では特に作成が必要なリソースはありません。
 	- appspec.yaml
 	- taskdef.json
 
-    もし作成内容がわからない場合は、cntfapp/sample/cnfs/chap-4_step-4/配下のファイルを参考にしていください。
+    もし作成内容がわからない場合は、cntfapp/sample/cnfs/chap-4_step-4/配下のファイルを参考にしてください。また、taskdef.json内の[dev\_account\_id]は開発環境アカウントのアカウントIDで適宜書き換えてください（書き換え忘れてしまうと、「Role is not valid」エラーが発生します）。
 
 4. 「 4.5.2 アプリケーションの変更」を実施してください。
 その際、CodeCommitにプッシュする対象として、4.5.2内で修正したアプリケーションだけでなく、上記で作成したbuildspec.yml、appspec.yaml、taskdef.jsonも併せてプッシュしてください。また、後続のCodePipelineが起動するためのトリガーブランチはdevelopです。

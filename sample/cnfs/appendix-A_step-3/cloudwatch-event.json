@@ -1,0 +1,22 @@
+{
+  "source": [
+    "aws.codecommit"
+  ],
+  "detail-type": [
+    "CodeCommit Pull Request State Change"
+  ],
+  "resources": [
+    "arn:aws:codecommit:ap-northeast-1:[dev_account_id]:cnapp-repo"
+  ],
+  "detail": {
+    "isMerged": [
+      "True"
+    ],
+    "sourceReference": [
+      "refs/heads/develop"
+    ],
+    "destinationReference": [
+      "refs/heads/staging"
+    ]
+  }
+}
