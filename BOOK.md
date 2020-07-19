@@ -364,7 +364,7 @@ Step4-3では特に作成が必要なリソースはありません。
 	- appspec.yaml
 	- taskdef.json
 
-    もし作成内容がわからない場合は、cntfapp/sample/cnfs/chap-4_step-4/配下のファイルを参考にしていください。
+    もし作成内容がわからない場合は、cntfapp/sample/cnfs/chap-4_step-4/配下のファイルを参考にしてください。また、taskdef.json内の[dev\_account\_id]は開発環境アカウントのアカウントIDで適宜書き換えてください（書き換え忘れてしまうと、「Role is not valid」エラーが発生します）。
 
 4. 「 4.5.2 アプリケーションの変更」を実施してください。
 その際、CodeCommitにプッシュする対象として、4.5.2内で修正したアプリケーションだけでなく、上記で作成したbuildspec.yml、appspec.yaml、taskdef.jsonも併せてプッシュしてください。また、後続のCodePipelineが起動するためのトリガーブランチはdevelopです。
