@@ -67,4 +67,6 @@ resource "aws_rds_cluster_instance" "main" {
   monitoring_interval          = 60
   preferred_maintenance_window = "sat:21:00-sat:21:30"
   auto_minor_version_upgrade   = true
+
+  depends_on = [aws_db_subnet_group.main]
 }
