@@ -13,9 +13,12 @@ jobs:
         fetch-depth: 0
         ref: cnfs/chap-4_step-4
 
-    - name: Run a one-line script
-      run: | 
-        echo ${{ github.base_ref}}
-        echo ${{ github.head_ref}}
+    - name: Dump GitHub context
+      env:
+        GITHUB_BASEREF: ${{ toJson(github.base_ref) }}
+        GITHUB_HEADREF: ${{ toJson(github.head_ref) }}
+      run: |
+        echo "$GITHUB_BASEREF"
+        echo "$GITHUB_HEADREF"
         ls ./modules/appbase/
 
