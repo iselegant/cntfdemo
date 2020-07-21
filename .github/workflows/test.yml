@@ -1,0 +1,20 @@
+name: test
+on:
+  pull_request:
+    branches: [master]
+    types: [closed]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: cnfs/chap-4_step-4
+
+    - name: Run a one-line script
+      run: | 
+        echo ${{ github.base_ref}}
+        echo ${{ github.head_ref}}
+        ls ./modules/appbase/
