@@ -17,8 +17,12 @@ jobs:
       env:
         GITHUB_BASEREF: ${{ toJson(github.base_ref) }}
         GITHUB_HEADREF: ${{ toJson(github.head_ref) }}
+        GITHUB_SHA: ${{ toJson(github.sha) }}
+        GITHUB_REF: ${{ toJson(github.ref) }}
       run: |
         echo "$GITHUB_BASEREF"
         echo "$GITHUB_HEADREF"
+        echo "$GITHUB_SHA"
+        echo "$GITHUB_REF"
         ls ./modules/appbase/
 
