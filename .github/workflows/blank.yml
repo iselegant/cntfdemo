@@ -21,6 +21,8 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Run a one-line script
+      env:
+        name: ${{ github.event_name }}
       run: | 
-        echo Hello, world!
+        echo Hello, world! ${name}
         ls ./modules/appbase/
