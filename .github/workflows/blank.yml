@@ -2,7 +2,7 @@ name: hoge
 
 on:
   repository_dispatch:
-    types: [build]
+    types: [hoge]
     
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,7 +23,7 @@ jobs:
     - name: Run a one-line script
       env:
         name: ${{ github.event_name }}
-        eventObjects:  ${{ github.event_path }}
+        eventObjects:  ${{ toJson(github.event.client_payload) }}
         event:  ${{ github.event.types }}
       run: | 
         echo Hello, world! ${name}
