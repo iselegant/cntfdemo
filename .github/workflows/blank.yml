@@ -23,7 +23,7 @@ jobs:
     - name: Run a one-line script
       env:
         name: ${{ github.event_name }}
-        eventObjects:  ${{ toJson(github.event) }}
+        eventObjects:  ${{ github.event_path }}
         event:  ${{ github.event.types }}
       run: | 
         echo Hello, world! ${name}
