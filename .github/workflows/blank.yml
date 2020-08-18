@@ -20,7 +20,7 @@ jobs:
         ref: cnfs/chap-3_step-1
     # Runs a single command using the runners shell
     - name: parse client payload
-      if: github.event_name) == 'repository_dispatch' && github.event.client_payload.dryrun 
+      if: github.event_name == 'repository_dispatch' && github.event.client_payload.dryrun 
       run: echo parse
     - name: Run a one-line script
       env:
