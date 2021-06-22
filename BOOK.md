@@ -40,45 +40,45 @@ Amazon AuroraやAmazon Systems Managerパラメーターストアなどで扱う
 
 REDOME.mdで作成したCloud9上で必要なブランチを取得します。
 
-	``` bash
-	$ mkdir terraform; ls -l; cd terraform
+```bash
+$ mkdir terraform; ls -l; cd terraform
 
-	$ git clone https://github.com/iselegant/cntfdemo
+$ git clone https://github.com/iselegant/cntfdemo
 
-	$ cd cntfdemo
+$ cd cntfdemo
 
-	$ for remote in `git branch -r`; do git branch --track ${remote#origin/} $remote; done
+$ for remote in `git branch -r`; do git branch --track ${remote#origin/} $remote; done
 
-	$ git branch
-	cnfs/chap-3_step-1
-	cnfs/chap-3_step-2
-	cnfs/chap-3_step-3
-	cnfs/chap-3_step-4
-	cnfs/chap-3_step-5
-	cnfs/chap-4_step-1
-	cnfs/chap-4_step-2
-	cnfs/chap-4_step-4
-	* master
+$ git branch
+cnfs/chap-3_step-1
+cnfs/chap-3_step-2
+cnfs/chap-3_step-3
+cnfs/chap-3_step-4
+cnfs/chap-3_step-5
+cnfs/chap-4_step-1
+cnfs/chap-4_step-2
+cnfs/chap-4_step-4
+* master
 
-	$ git pull --all
-	Already up-to-date.
+$ git pull --all
+Already up-to-date.
 
-	$ git checkout cnfs/chap-3_step-1
-	Switched to branch 'cnfs/chap-3_step-1'
-	Your branch is up-to-date with 'origin/cnfs/chap-3_step-1'.
-	```
+$ git checkout cnfs/chap-3_step-1
+Switched to branch 'cnfs/chap-3_step-1'
+Your branch is up-to-date with 'origin/cnfs/chap-3_step-1'.
+```
 
 ### Terraform内一部変数も設定
 
 ソースコードを取得後、事前にそれぞれのAWS環境に合わせたTerraform変数の設定が必要となります。
 以下ファイルを修正し、変数の値を書き換えてください。
 
-	``` bash
-	# dependiencies.tfのdummyを利用するAWS環境のAWSアカウントIDに書き換える
-	# 例) "dummy" -> "0123456789012"
-	$ cat main/dependencies.tfvars
-	aws_account_id = "0123456789012"
-	```
+```bash
+# dependiencies.tfのdummyを利用するAWS環境のAWSアカウントIDに書き換える
+# 例) "dummy" -> "0123456789012"
+$ cat main/dependencies.tfvars
+aws_account_id = "0123456789012"
+```
 
 ## 3章に関する手順
 
